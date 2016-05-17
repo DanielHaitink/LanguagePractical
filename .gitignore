@@ -64,3 +64,6 @@ target/
 #Big files
 pairCounts
 similarwords
+
+#Apple files
+.DS_Store
