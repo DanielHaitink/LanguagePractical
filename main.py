@@ -19,6 +19,10 @@ for line in sys.stdin:
 		continue
 
 	output = preParseSentence(line)
+	if output is None:
+		print("No solution found")
+		continue
+	print(output)
 
 	#Give sentence to prePostParse
 
