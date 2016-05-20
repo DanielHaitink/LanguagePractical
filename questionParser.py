@@ -1,5 +1,7 @@
 import sys, re
 
+FILE_PAIRCOUNT = "pairCounts"
+
 TYPE_SENSE = "sense"
 TYPE_WORD = "word"
 TYPE_ROOT = "root"
