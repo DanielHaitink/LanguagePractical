@@ -1,7 +1,7 @@
 import socket, sys
+import variables as v
 from lxml import etree
 
-__DEBUG__ = True
 
 # parse input sentence and return alpino output as an xml element tree
 def parseSentenceAlpino(sent, host='zardoz.service.rug.nl', port=42424):
@@ -16,7 +16,7 @@ def parseSentenceAlpino(sent, host='zardoz.service.rug.nl', port=42424):
 		if not byte:
 			break
 		bytes_received += byte
-	if __DEBUG__:
+	if v.__DEBUG__:
 		print(bytes_received.decode('utf-8'), file=sys.stderr)
 	xml = etree.fromstring(bytes_received)
 	return xml

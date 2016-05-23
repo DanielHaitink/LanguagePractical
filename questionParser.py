@@ -1,13 +1,7 @@
 import sys, re
+import variables as v
 
-FILE_PAIRCOUNT = "pairCounts"
-
-TYPE_SENSE = "sense"
-TYPE_WORD = "word"
-TYPE_ROOT = "root"
-TYPE_LEMMA = "lemma"
-
-#give alpino node and wordtype you want to extract
+#give alpino node and wordtype you want to extract see variables
 def getTreeWordList(xml, wordtype):
     #appends the value of the word-attribute for all nodes that are dominated by the node 'xml'
     #that is the argument of the function, and returns this a single string

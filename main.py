@@ -1,7 +1,7 @@
 import sys
+import variables as v
 from prePostParser import preParseSentence
 
-__DEBUG__ = False
 
 #Shows help
 def showHelp():
@@ -10,8 +10,6 @@ def showHelp():
 	input("PRESS THE ENTER KEY TO CONTINUE...")
 
 for line in sys.stdin:
-	if __DEBUG__:
-		print(line)
 	if line == "exit\n":
 		break
 	if line == "help\n":
@@ -21,6 +19,7 @@ for line in sys.stdin:
 	output = preParseSentence(line)
 	if output is None:
 		print("No solution found")
+		#change to correct output
 		continue
 	print(output)
 
