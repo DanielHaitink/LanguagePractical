@@ -2,7 +2,8 @@ import sys, re
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-def findProperties(URI): #find all properties that a resource in dbpedia has.
+# Find all properties that the given URI has
+def findProperties(URI): 
     query = """
     SELECT ?property
     WHERE {<%s> ?property ?value  }
@@ -74,9 +75,11 @@ def getDomainURI(domain):
 def makeAZ(string):
 	return re.sub(r'[\W_]+', '', string)
 
+# get similar properties to prop
 def getSimilarProperties(prop, allProperties):
     return difflib.get_close_matches(prop, allProperties)
 
+# Get all properties which are similiar to a synonym of prop
 def getAllSimilarProperties(prop, allProperties):
     outList = []
     sw = getSimilarWords(prop)
@@ -112,6 +115,7 @@ def findPropertySimilarWords(sentence):
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
+# Parse question of type "Wie/wat is X van Y"
 def parseXofY(xml, expectedAnswer):
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
@@ -141,5 +145,9 @@ def parseXofY(xml, expectedAnswer):
 
     #check best match, return the first thing that matches expectedAnswer
 
+# Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):
+    # First check URI for number solutions
+    # Else create a listing query which somehow answers question
+
     return None
