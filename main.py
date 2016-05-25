@@ -5,6 +5,7 @@ from prePostParser import preParseSentence
 def formatAnswer(solutionID, solutionList):
 	solutionString = 
 	for item in solutionList:
+		
 
 
 #Shows help
@@ -20,7 +21,7 @@ for line in sys.stdin:
 		showHelp()
 		continue
 
-	
+
 
 	if "\t" in line:
 		lineList = line.split("\t")

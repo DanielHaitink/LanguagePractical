@@ -74,6 +74,41 @@ def getDomainURI(domain):
 def makeAZ(string):
 	return re.sub(r'[\W_]+', '', string)
 
+def getSimilarProperties(prop, allProperties):
+    return difflib.get_close_matches(prop, allProperties)
+
+def getAllSimilarProperties(prop, allProperties):
+    outList = []
+    sw = getSimilarWords(prop)
+    for word in sw:
+        if word is not "":
+            outList += getSimilarProperties(word, allProperties)
+    outList += sw
+    return outList
+
+#search fot similar words
+def getSimilarWords(string):
+    returnList = []
+    searchList = search(string, v.FILE_SYNONYMS)
+    for item in searchList:
+        returnList += item.split("#")
+    if not returnList:
+        returnList.append(string)
+    return returnList
+        
+#Unknown how this worked
+def findPropertySimilarWords(sentence):
+    bestProp = None
+    for verb in verbs:
+        for preprosition in prepositions:
+            if verb in sentence and preprosition in sentence:
+                currentProp = str(find_between(sentence.lower(), verb+" ", " "+preprosition))
+                if currentProp is not None and currentProp != "" and currentProp != " "   and ( bestProp is None or len(bestProp) < len(currentProp)):
+                    bestProp = currentProp
+    if bestProp is None:
+        return None
+    return getSimilarWords(removeArticles(bestProp))
+
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
