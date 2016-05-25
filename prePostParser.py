@@ -41,7 +41,7 @@ def preParseSentence(sentence):
 	# Parse the WHD of the sentence in alpino
 	whds = alpinoXML.xpath('//node[@rel="whd"]')
 	if listNoneCheck(whds):
-	v.printDebug("ERROR: NO WHDS FOUND: "+ whds)
+		v.printDebug("ERROR: NO WHDS FOUND: "+ whds)
 	whd = getTreeWordList(whds[0], v.TYPE_WORD)
 
 	v.printDebug(whd)

@@ -64,7 +64,7 @@ def search(query, file):
 
 #gives the URI of a given domain
 def getDomainURI(domain):
-	PCList = search(domain+"#", FILE_PAIRCOUNT)
+	PCList = search(domain+"#", v.FILE_PAIRCOUNT)
 	if len(PCList) is 0:
 		return None
 	bestItem = getHighestPairCount(PCList)
