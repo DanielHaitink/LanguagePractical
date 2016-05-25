@@ -1,9 +1,9 @@
-import sys, re
+import sys, re, difflib
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 # Find all properties that the given URI has
-def findProperties(URI): 
+def findProperties(URI):
     query = """
     SELECT ?property
     WHERE {<%s> ?property ?value  }
@@ -98,7 +98,7 @@ def getSimilarWords(string):
     if not returnList:
         returnList.append(string)
     return returnList
-        
+
 #Unknown how this worked
 def findPropertySimilarWords(sentence):
     bestProp = None
@@ -111,6 +111,18 @@ def findPropertySimilarWords(sentence):
     if bestProp is None:
         return None
     return getSimilarWords(removeArticles(bestProp))
+
+def matchSynonymProperty(synonyms, properties):
+    #return sorted list of most likely properties
+    bestMatches = []
+    for property in properties:
+        currentMax = 0
+        for synonym in synonyms:
+            similarity = difflib.SequenceMatcher(a=property, b=synonym).ratio()
+            if similarity > currentMax:
+                currentMax = similarity
+        bestMatches.append([currentMax, property])
+    return [t[1] for t in sorted(bestMatches, reverse=True)]
 
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
@@ -140,8 +152,8 @@ def parseXofY(xml, expectedAnswer):
     props = findProperties(concept)
 
     #match properties using synonyms
-
-    
+    synonyms = getSimilarWords(property)
+    bestMatches = matchSynonymProperty(synonyms, props)
 
     #check best match, return the first thing that matches expectedAnswer
 
