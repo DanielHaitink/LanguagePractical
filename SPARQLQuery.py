@@ -15,4 +15,16 @@ def sendQuery(query): #returns list of answers for a SPARQL query
 
     return answer
 
-#TODO: create templates for SPARQL query for each question type 
+#TODO: create templates for SPARQL query for each question type
+
+def queryXofY(property, URI):
+    query = """
+    SELECT str(COALESCE(?answer2,?answer)) as ?answer
+
+    WHERE{
+    <%s> prop-nl:%s ?answer
+    OPTIONAL{?answer rdfs:label ?answer2}
+    }
+    """ % (URI,property)
+
+    return sendQuery(query)

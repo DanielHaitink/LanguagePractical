@@ -40,7 +40,7 @@ def preParseSentence(sentence):
 	expectedAnswer = v.ANSWER_UNKNOWN
 	solution = None
 
-	alpinoXML = parseSentenceAlpino(sentence) 
+	alpinoXML = parseSentenceAlpino(sentence)
 
 	# Parse the WHD of the sentence in alpino
 	whds = alpinoXML.xpath('//node[@rel="whd"]')
@@ -48,7 +48,7 @@ def preParseSentence(sentence):
 		v.printDebug("ERROR: NO WHDS FOUND: "+ str(whds))
 	else:
 		whd = getTreeWordList(whds[0], v.TYPE_WORD)
-	
+
 		# Check what expectedAnswer is based on WHD, if not recognized it is v.ANSWER_UNKNOWN
 		if containsFromList(whd, v.WHD_LOCATION):
 			expectedAnswer = v.ANSWER_LOCATION
@@ -60,7 +60,7 @@ def preParseSentence(sentence):
 			expectedAnswer = v.ANSWER_OBJECT
 		elif containsFromList(whd, v.WHD_DATE):
 			expectedAnswer = v.ANSWER_DATE
-	
+
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
 		solution = parseNumberOf(alpinoXML, v.ANSWER_NUMBER)

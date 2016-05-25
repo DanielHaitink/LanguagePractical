@@ -1,6 +1,7 @@
 import sys, re, difflib
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
+from SPARQLQuery import queryXofY
 
 # Find all properties that the given URI has
 def findProperties(URI):
@@ -64,12 +65,17 @@ def search(query, file):
 	return outList
 
 #gives the URI of a given domain
-def getDomainURI(domain):
-	PCList = search(domain+"#", v.FILE_PAIRCOUNT)
-	if len(PCList) is 0:
-		return None
-	bestItem = getHighestPairCount(PCList)
-	return findBetween(bestItem, "\t", "\t")
+def getDomainURI(concept):
+    max = 0
+    URI = None
+    words = None
+    for line in open("pairCounts", 'r'):
+        if re.search("^"+concept, line, re.IGNORECASE): #search concept in pairCounts
+            line = line.rstrip()
+            line = line.split("\t") #split lines by tabs to separate elements
+            if int(line[2])>max: #if occurcences is higher than the maximum found until now:
+                max = int(line[2]) #new maximum amount of occurences
+                URI = line[1] #store URI
 
 #Removes everything from string except numbers and letters
 def makeAZ(string):
@@ -142,20 +148,25 @@ def parseXofY(xml, expectedAnswer):
     if property==None or property=="":
         return None
 
-    #test
-    #return (property, concept)
-
     #find URI of concept
     URI = getDomainURI(concept)
 
     #find properties of the concept
-    props = findProperties(concept)
+    props = findProperties(URI)
 
     #match properties using synonyms
     synonyms = getSimilarWords(property)
     bestMatches = matchSynonymProperty(synonyms, props)
 
-    #check best match, return the first thing that matches expectedAnswer
+    #go through properties until expected answer is found
+    #TODO: only terminate if answer matches expected answer!
+    answer = None
+    for property in bestMatches:
+        print (property)
+        if answer != None and answer != []:
+            break
+        answer = queryXofY(property, URI)
+    return answer
 
 # Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):
