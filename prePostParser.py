@@ -1,7 +1,7 @@
 import socket, sys
 import variables as v
 from lxml import etree
-from questionParser import getTreeWordList
+from questionParser import getTreeWordList, parseNumberOf, parseXofY
 
 def containsFromList(sentence, list):
 	for item in list:
@@ -27,29 +27,54 @@ def parseSentenceAlpino(sent, host='zardoz.service.rug.nl', port=42424):
 	xml = etree.fromstring(bytes_received)
 	return xml
 
+def listNoneCheck(list):
+	if list == None or list[0] == None:
+		return True
+	return False
+
 def preParseSentence(sentence):
 	expectedAnswer = v.ANSWER_UNKNOWN
+	solution = None
 
 	alpinoXML = parseSentenceAlpino(sentence) 
 
+	# Parse the WHD of the sentence in alpino
 	whds = alpinoXML.xpath('//node[@rel="whd"]')
-	if whds == None or whds[0] == None:
-		if __DEBUG__:
-			print("ERROR: NO WHDS FOUND: "+ whds , file=sys.stderr)
-			return None
+	if listNoneCheck(whds):
+	v.printDebug("ERROR: NO WHDS FOUND: "+ whds)
 	whd = getTreeWordList(whds[0], v.TYPE_WORD)
 
+	v.printDebug(whd)
+
+	# Check what expectedAnswer is based on WHD, if not recognized it is v.ANSWER_UNKNOWN
 	if containsFromList(whd, v.WHD_LOCATION):
 		expectedAnswer = v.ANSWER_LOCATION
 	elif containsFromList(whd, v.WHD_PERSON):
 		expectedAnswer = v.ANSWER_PERSON
 	elif containsFromList(whd, v.WHD_NUMBER):
 		expectedAnswer = v.ANSWER_NUMBER
+	elif containsFromList(whd, v.WHD_OBJECT):
+		expectedAnswer = v.ANSWER_OBJECT
 	elif containsFromList(whd, v.WHD_DATE):
 		expectedAnswer = v.ANSWER_DATE
 
-	print(whd)
 
+	# Check if question has expected answer number
+	if expectedAnswer == v.ANSWER_NUMBER:
+		solution = parseNumberOf(alpinoXML, v.ANSWER_NUMBER)
+		if not solution is None:
+			return solution
+
+	# Check if question is of format X of Y
+	wws = alpinoXML.xpath('//node[@pos="verb"]')
+
+	v.printDebug(wws)
+
+	if not listNoneCheck(wws):
+		if "zijn".lower() in getTreeWordList(wws[0], v.TYPE_LEMMA).lower(): #maybe add need of only 1 ww
+			solution = parseXofY(alpinoXML, expectedAnswer)
+			if not solution is None:
+				return solution
 
 	#determine what kind of sentence it is
 	#send sentence to correct function in questionParser, then check if output is as expected

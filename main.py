@@ -2,6 +2,10 @@ import sys
 import variables as v
 from prePostParser import preParseSentence
 
+def formatAnswer(solutionID, solutionList):
+	solutionString = 
+	for item in solutionList:
+
 
 #Shows help
 def showHelp():
@@ -15,6 +19,12 @@ for line in sys.stdin:
 	if line == "help\n":
 		showHelp()
 		continue
+
+	
+
+	if "\t" in line:
+		lineList = line.split("\t")
+
 
 	output = preParseSentence(line)
 	if output is None:
