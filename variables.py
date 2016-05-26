@@ -27,6 +27,7 @@ WHD_DATE = ["wanneer"]
 WHD_NUMBER = ["hoeveel"]
 WHD_OBJECT = ["welke"]
 
+
 def printDebug(debug):
 	if __DEBUG__:
 		print(debug, file=sys.stderr)

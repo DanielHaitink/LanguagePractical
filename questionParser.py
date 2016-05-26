@@ -131,11 +131,53 @@ def matchSynonymProperty(synonyms, properties):
         bestMatches.append([currentMax, property])
     return [t[1] for t in sorted(bestMatches, reverse=True)]
 
+def isURI(string):
+    if "http://" in string:
+        return True
+    return False
+
+def isExpectedAnswerPerson(answer):
+    if isURI(answer):
+        pass
+    else:
+        URI  = getDomainURI(answer)
+        pass
+    return True
+
+def isExpectedAnswerLocation(answer):
+    return True
+
+def isExpectedAnswerDate(answer):
+    return True
+
+def isExpectedAnswerNumber(answer):
+    return True
+
+def isExpectedAnswerObject(answer):
+    return True
+
+# Give answer and expectedAnswer and it uses it to go to sub functions
+def isExpectedAnswer(answer, expectedAnswer):
+    if expectedAnswer == v.ANSWER_PERSON:
+        return isExpectedAnswerPerson(answer)
+    elif expectedAnswer == v.ANSWER_LOCATION:
+        return isExpectedAnswerLocation(answer)
+    elif expectedAnswer == v.ANSWER_DATE:
+        return isExpectedAnswerDate(answer)
+    elif expectedAnswer == v.ANSWER_NUMBER:
+        return isExpectedAnswerNumber(answer)
+    elif expectedAnswer == v.ANSWER_OBJECT:
+        return isExpectedAnswerObject(answer)
+    # Return True if expectedAnswer == ANSWER_UNKNOWN or something else
+    return True
+
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
 # Parse question of type "Wie/wat is X van Y"
 def parseXofY(xml, expectedAnswer):
+    answer = None
+
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
     for name in names:
@@ -147,10 +189,14 @@ def parseXofY(xml, expectedAnswer):
     for name in names:
         property = getTreeWordList(name,v.TYPE_LEMMA)
     if property==None or property=="":
+        v.printDebug("NO PROPERTY FOUND")
         return None
 
     #find URI of concept
     URI = getDomainURI(concept)
+    if URI == None:
+        v.printDebug("NO URI FOUND")
+        return None
 
     #find properties of the concept
     props = findProperties(URI)
@@ -161,7 +207,6 @@ def parseXofY(xml, expectedAnswer):
 
     #go through properties until expected answer is found
     #TODO: only terminate if answer matches expected answer!
-    answer = None
     for property in bestMatches:
         print (property)
         if answer != None and answer != []:
