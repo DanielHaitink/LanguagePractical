@@ -76,6 +76,7 @@ def getDomainURI(concept):
             if int(line[2])>max: #if occurcences is higher than the maximum found until now:
                 max = int(line[2]) #new maximum amount of occurences
                 URI = line[1] #store URI
+    return URI
 
 #Removes everything from string except numbers and letters
 def makeAZ(string):
