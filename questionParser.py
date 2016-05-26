@@ -1,7 +1,7 @@
 import sys, re, difflib
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
-from SPARQLQuery import queryXofY
+from SPARQLQuery import queryXofY, queryGetTypes
 
 # Find all properties that the given URI has
 def findProperties(URI):
@@ -119,6 +119,7 @@ def findPropertySimilarWords(sentence):
         return None
     return getSimilarWords(removeArticles(bestProp))
 
+# DOES NOT WORK CORRECTLY
 def matchSynonymProperty(synonyms, properties):
     #return sorted list of most likely properties
     bestMatches = []
@@ -136,28 +137,54 @@ def isURI(string):
         return True
     return False
 
-def isExpectedAnswerPerson(answer):
-    if isURI(answer):
-        pass
-    else:
+# Returns true if wantedTypeName is in the list types, else false
+def findType(types, wantedTypeName):
+    allTypes = []
+    for currentType in types:
+        if wantedTypeName in currentType:
+            return True
+        #if "http://dbpedia.org/ontology/" in currentType:
+        #    allTypes.append(currentType.split("http://dbpedia.org/ontology/",1)[1])
+    return False
+
+# Returns whether the URI contains one of the wanted types.
+def basicExpectedAnswer(answer, wantedTypeNames):
+    URI = answer
+    if not isURI(answer):
         URI  = getDomainURI(answer)
-        pass
-    return True
+    if URI == None:
+        v.printDebug("URI NOT FOUND IN isExpectedAnswerPerson")
+        return False
+    types = queryGetTypes(URI)
+    for name in wantedTypeNames:
+        if findType(types, name):
+            return True
+    return False
+
+def isExpectedAnswerPerson(answer):
+    if basicExpectedAnswer(answer, ["Person"]):
+        return True
+    return False
 
 def isExpectedAnswerLocation(answer):
-    return True
+    if basicExpectedAnswer(answer, ["Location", "Place", "Country", "City"]):
+        return True
+    return False
 
 def isExpectedAnswerDate(answer):
+    # check xsd:date
     return True
 
 def isExpectedAnswerNumber(answer):
+    # check xsd:integer
     return True
 
 def isExpectedAnswerObject(answer):
+    # Unsure how to check this
     return True
 
 # Give answer and expectedAnswer and it uses it to go to sub functions
-def isExpectedAnswer(answer, expectedAnswer):
+def isExpectedAnswerSwitch(answer, expectedAnswer):
     if expectedAnswer == v.ANSWER_PERSON:
         return isExpectedAnswerPerson(answer)
     elif expectedAnswer == v.ANSWER_LOCATION:
@@ -171,6 +198,16 @@ def isExpectedAnswer(answer, expectedAnswer):
     # Return True if expectedAnswer == ANSWER_UNKNOWN or something else
     return True
 
+#Check if it is the expected Answer type
+def isExpectedAnswer(answer, expectedAnswer):
+    if expectedAnswer == v.ANSWER_UNKNOWN:
+        return True
+    for answerItem in answer:
+        if not isExpectedAnswerSwitch(answerItem, expectedAnswer):
+            return False
+    return True
+
+
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
@@ -181,7 +218,7 @@ def parseXofY(xml, expectedAnswer):
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
     for name in names:
-        concept = getTreeWordList(name,v.TYPE_LEMMA)
+        concept = getTreeWordList(name,v.TYPE_WORD)
     if concept==None or concept=="":
         return None
     #find property
@@ -195,23 +232,40 @@ def parseXofY(xml, expectedAnswer):
     #find URI of concept
     URI = getDomainURI(concept)
     if URI == None:
-        v.printDebug("NO URI FOUND")
-        return None
+        # Remove articles from domain
+        # TODO only remove first article
+        URI = getDomainURI(removeArticles(concept))
+        if URI == None:
+            # No URI found
+            v.printDebug("NO URI FOUND IN XofY")
+            v.printDebug(concept)
+            return None
 
     #find properties of the concept
-    props = findProperties(URI)
+    URIprops = findProperties(URI)
 
     #match properties using synonyms
     synonyms = getSimilarWords(property)
-    bestMatches = matchSynonymProperty(synonyms, props)
+    v.printDebug(synonyms)
+
+    #TODO bestMatches lijkt het niet goed te doen
+    bestMatches = matchSynonymProperty(synonyms, URIprops)
 
     #go through properties until expected answer is found
     #TODO: only terminate if answer matches expected answer!
+    #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
         print (property)
-        if answer != None and answer != []:
-            break
         answer = queryXofY(property, URI)
+        if answer == None or answer == []:
+            continue
+        v.printDebug(answer)
+        v.printDebug(expectedAnswer)
+        if not isExpectedAnswer(answer, expectedAnswer):
+            answer = None
+            continue
+        else:
+            break
     return answer
 
 # Parse question which wants a number

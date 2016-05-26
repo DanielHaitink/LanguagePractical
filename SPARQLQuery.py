@@ -28,3 +28,14 @@ def queryXofY(property, URI):
     """ % (URI,property)
 
     return sendQuery(query)
+
+# QUery for the type checking
+def queryGetTypes(URI):
+    query = """
+    SELECT ?types
+
+    WHERE{
+    <%s> rdf:type ?answer
+    }
+    """ % (URI)
+    return sendQuery(query)
