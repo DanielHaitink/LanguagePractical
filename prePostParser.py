@@ -6,7 +6,7 @@ from questionParser import getTreeWordList, parseNumberOf, parseXofY
 # return true is something from list is in sentence, else false
 def containsFromList(sentence, list):
 	for item in list:
-		if item in sentence:
+		if item.lower() in sentence.lower():
 			return True
 	return False
 

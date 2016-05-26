@@ -243,6 +243,7 @@ def parseXofY(xml, expectedAnswer):
 
     #find properties of the concept
     URIprops = findProperties(URI)
+    v.printDebug(URIprops)
 
     #match properties using synonyms
     synonyms = getSimilarWords(property)
