@@ -214,6 +214,7 @@ def isExpectedAnswer(answer, expectedAnswer):
 # Parse question of type "Wie/wat is X van Y"
 def parseXofY(xml, expectedAnswer):
     answer = None
+    firstAnswer = None
 
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
@@ -267,6 +268,9 @@ def parseXofY(xml, expectedAnswer):
             continue
         else:
             break
+    # Return the first answer found, At least it gives an answer
+    if answer == None:
+        return firstAnswer
     return answer
 
 # Parse question which wants a number

@@ -1,4 +1,5 @@
 import re
+import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 def sendQuery(query): #returns list of answers for a SPARQL query
@@ -8,7 +9,7 @@ def sendQuery(query): #returns list of answers for a SPARQL query
     results = sparql.query().convert()
 
     answer = []
-
+    v.printDebug(results)
     for result in results["results"]["bindings"]:
         for arg in result :
             answer.append(result[arg]["value"])
