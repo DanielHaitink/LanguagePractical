@@ -18,15 +18,36 @@ def sendQuery(query): #returns list of answers for a SPARQL query
 
 #TODO: create templates for SPARQL query for each question type
 
+
 def queryXofY(property, URI):
     query = """
-    SELECT str(COALESCE(?answer2,?answer)) as ?answer
+    SELECT ?answer
 
     WHERE{
     <%s> prop-nl:%s ?answer
-    OPTIONAL{?answer rdfs:label ?answer2}
     }
     """ % (URI,property)
+
+    titles = []
+    answers = sendQuery(query)
+    for answer in answers:
+        if "nl.dbpedia" in answer:
+            title = URITitle(answer)
+            if title != []:
+                titles.append(title[0])
+            else:
+                titles.append(answer)
+        else:
+            titles.append(answer)
+    return answers, titles
+
+def URITitle(URI):
+    query = """
+    SELECT ?title
+    WHERE{
+    <%s> rdfs:label ?title
+    }
+    """ % (URI)
 
     return sendQuery(query)
 
