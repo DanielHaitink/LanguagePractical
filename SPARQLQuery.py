@@ -28,6 +28,7 @@ def queryXofY(property, URI):
     """ % (URI,property)
 
     titles = []
+    print(query)
     answers = sendQuery(query)
     for answer in answers:
         if "nl.dbpedia" in answer:

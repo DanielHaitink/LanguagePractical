@@ -179,6 +179,7 @@ def isExpectedAnswerPerson(answer):
 #TODO probably not 100% correct
 def isExpectedAnswerLocation(answer):
     URI = answer
+    print("url: "+URI)
     answerSplit = answer.split(",")
     count = 0
     while count < len(answerSplit) and not isURI(URI):
@@ -291,6 +292,77 @@ def parseXofY(xml, expectedAnswer):
     if answers == None:
         return titles
     return titles
+
+def parseWhoWhen(xml, expectedAnswer):
+    #maybe idea to split the parse into more functions, lot of duplicate code this way.
+    #Waar is Sven Kramer geboren werkt /wanneer geboren niet. Pakt nog steeds geboorteplaats als property
+    answers = None
+    firstAnswer = None
+    titles = None
+    t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
+    if t:
+        t=t[0]
+        if t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False):
+            prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
+        else:
+            prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
+        names =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+
+     #find concept
+    for name in names:
+        concept = getTreeWordList(name,v.TYPE_WORD)
+    if concept==None or concept=="":
+        return None
+    #find property
+    for name in prop:
+        property = getTreeWordList(name,v.TYPE_LEMMA)
+    if property==None or property=="":
+        v.printDebug("NO PROPERTY FOUND")
+        return None
+
+    #find URI of concept
+    URI = getDomainURI(concept)
+    if URI == None:
+        # Remove articles from domain
+        # TODO only remove first article
+        URI = getDomainURI(removeArticles(concept))
+        if URI == None:
+            # No URI found
+            v.printDebug("NO URI FOUND IN WhoWhen")
+            v.printDebug(concept)
+            return None
+
+    #find properties of the concept
+    URIprops = findProperties(URI)
+    v.printDebug(URIprops)
+
+    #match properties using synonyms
+    synonyms = getSimilarWords(property)
+    v.printDebug(synonyms)
+
+    #TODO bestMatches lijkt het niet goed te doen
+    bestMatches = matchSynonymProperty(synonyms, URIprops)
+
+    #go through properties until expected answer is found
+    #TODO: only terminate if answer matches expected answer!
+    #TODO not only get answers, also get the XML information of the answer so it can classify correctly
+    for property in bestMatches:
+        print (property)
+        answers,titles = queryXofY(property, URI)
+        if answers == None or answers == []:
+            continue
+        v.printDebug(answers)
+        v.printDebug(expectedAnswer)
+        if not isExpectedAnswer(answers, expectedAnswer):
+            answers = None
+            continue
+        else:
+            break
+    # Return the first answer found, At least it gives an answer
+    if answers == None:
+        return titles
+    return titles
+
 
 # Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):
