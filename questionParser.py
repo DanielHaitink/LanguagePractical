@@ -192,6 +192,9 @@ def isExpectedAnswerLocation(answer):
 
 def isExpectedAnswerDate(answer):
     # check xsd:date
+    #can't be date if it is a uri
+    if(isURI(answer)):
+        return False
     return True
 
 def isExpectedAnswerNumber(answer):

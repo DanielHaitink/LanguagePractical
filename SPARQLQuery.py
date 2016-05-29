@@ -26,7 +26,7 @@ def queryXofY(property, URI):
     <%s> prop-nl:%s ?answer
     }
     """ % (URI,property)
-
+    v.printDebug(query)
     titles = []
     answers = sendQuery(query)
     for answer in answers:
