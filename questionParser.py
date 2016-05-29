@@ -141,20 +141,14 @@ def isURI(string):
 def findType(types, wantedTypeName):
     allTypes = []
     for currentType in types:
-        if wantedTypeName in currentType:
+        if wantedTypeName.lower() in currentType.lower():
             return True
         #if "http://dbpedia.org/ontology/" in currentType:
         #    allTypes.append(currentType.split("http://dbpedia.org/ontology/",1)[1])
     return False
 
 # Returns whether the URI contains one of the wanted types.
-def basicExpectedAnswer(answer, wantedTypeNames):
-    URI = answer
-    if not isURI(answer):
-        URI  = getDomainURI(answer)
-    if URI == None:
-        v.printDebug("URI NOT FOUND IN isExpectedAnswerPerson")
-        return False
+def typesInURI(URI, wantedTypeNames):
     types = queryGetTypes(URI)
     v.printDebug(types)
     for name in wantedTypeNames:
@@ -162,18 +156,36 @@ def basicExpectedAnswer(answer, wantedTypeNames):
             return True
     return False
 
+# get URI of answer
+def getExpectedAnswerURI(answer):
+    URI = answer
+    if not isURI(answer):
+        URI  = getDomainURI(answer)
+    if URI == None:
+        return None
+
 def isExpectedAnswerPerson(answer):
+    URI = answer
     for passWord in v.PASS_PERSON:
         if passWord in answer:
             return True
-    if basicExpectedAnswer(answer, ["Person", "Agent"]):
+    if not isURI(answer):
+        URI = getExpectedAnswerURI(answer)
+    if typesInURI(URI, ["Person", "Agent"]):
         return True
     #names = answer.split(" ")
-
     return False
 
+#TODO probably not 100% correct
 def isExpectedAnswerLocation(answer):
-    if basicExpectedAnswer(answer, ["Location", "Place", "Country", "City"]):
+    URI = answer
+    answerSplit = answer.split(",")
+    count = 0
+    while count < len(answerSplit) and not isURI(URI):
+        URI = getExpectedAnswerURI(answerSplit[count])
+    if URI is None:
+        return False
+    if typesInURI(URI, ["Location", "Place", "Country", "City"]):
         return True
     return False
 
