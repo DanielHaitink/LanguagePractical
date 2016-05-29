@@ -133,7 +133,7 @@ def matchSynonymProperty(synonyms, properties):
     return [t[1] for t in sorted(bestMatches, reverse=True)]
 
 def isURI(string):
-    if "http://nl.dbpedia.org/resource/" in string:
+    if string is not None and "http://nl.dbpedia.org/resource/" in string:
         return True
     return False
 
@@ -161,8 +161,7 @@ def getExpectedAnswerURI(answer):
     URI = answer
     if not isURI(answer):
         URI  = getDomainURI(answer)
-    if URI == None:
-        return None
+    return URI
 
 def isExpectedAnswerPerson(answer):
     URI = answer
@@ -179,11 +178,15 @@ def isExpectedAnswerPerson(answer):
 #TODO probably not 100% correct
 def isExpectedAnswerLocation(answer):
     URI = answer
-    print("url: "+URI)
+    v.printDebug("url: "+str(URI))
     answerSplit = answer.split(",")
     count = 0
+    v.printDebug(answerSplit)
     while count < len(answerSplit) and not isURI(URI):
-        URI = getExpectedAnswerURI(answerSplit[count])
+        currentAnswer = makeAZ(answerSplit[count])
+        v.printDebug(getExpectedAnswerURI(str(currentAnswer)))
+        URI = getExpectedAnswerURI(str(currentAnswer))
+        count += 1
     if URI is None:
         return False
     if typesInURI(URI, ["Location", "Place", "Country", "City"]):
