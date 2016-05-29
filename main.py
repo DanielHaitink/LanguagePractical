@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+#environment set so that can use ./main.py
 import sys
 import variables as v
 from prePostParser import preParseSentence
