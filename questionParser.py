@@ -133,7 +133,7 @@ def matchSynonymProperty(synonyms, properties):
     return [t[1] for t in sorted(bestMatches, reverse=True)]
 
 def isURI(string):
-    if "http://" in string:
+    if "http://nl.dbpedia.org/resource/" in string:
         return True
     return False
 
@@ -156,13 +156,14 @@ def basicExpectedAnswer(answer, wantedTypeNames):
         v.printDebug("URI NOT FOUND IN isExpectedAnswerPerson")
         return False
     types = queryGetTypes(URI)
+    v.printDebug(types)
     for name in wantedTypeNames:
         if findType(types, name):
             return True
     return False
 
 def isExpectedAnswerPerson(answer):
-    if basicExpectedAnswer(answer, ["Person"]):
+    if basicExpectedAnswer(answer, ["Person", "Agent"]):
         return True
     return False
 
@@ -213,8 +214,9 @@ def isExpectedAnswer(answer, expectedAnswer):
 
 # Parse question of type "Wie/wat is X van Y"
 def parseXofY(xml, expectedAnswer):
-    answer = None
+    answers = None
     firstAnswer = None
+    titles = None
 
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
@@ -258,20 +260,20 @@ def parseXofY(xml, expectedAnswer):
     #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
         print (property)
-        answer = queryXofY(property, URI)
-        if answer == None or answer == []:
+        answers,titles = queryXofY(property, URI)
+        if answers == None or answers == []:
             continue
-        v.printDebug(answer)
+        v.printDebug(answers)
         v.printDebug(expectedAnswer)
-        if not isExpectedAnswer(answer, expectedAnswer):
-            answer = None
+        if not isExpectedAnswer(answers, expectedAnswer):
+            answers = None
             continue
         else:
             break
     # Return the first answer found, At least it gives an answer
-    if answer == None:
-        return firstAnswer
-    return answer
+    if answers == None:
+        return titles
+    return titles
 
 # Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):

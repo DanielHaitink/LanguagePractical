@@ -9,7 +9,6 @@ def sendQuery(query): #returns list of answers for a SPARQL query
     results = sparql.query().convert()
 
     answer = []
-    v.printDebug(results)
     for result in results["results"]["bindings"]:
         for arg in result :
             answer.append(result[arg]["value"])
@@ -54,7 +53,7 @@ def URITitle(URI):
 # QUery for the type checking
 def queryGetTypes(URI):
     query = """
-    SELECT ?types
+    SELECT ?answer
 
     WHERE{
     <%s> rdf:type ?answer

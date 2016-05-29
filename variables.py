@@ -27,7 +27,7 @@ WHD_DATE = ["wanneer"]
 WHD_NUMBER = ["hoeveel"]
 WHD_OBJECT = ["welke"]
 
-TITLES_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
+PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
 
 
 def printDebug(debug):
