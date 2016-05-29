@@ -61,7 +61,7 @@ def preParseSentence(sentence):
 		elif containsFromList(whd, v.WHD_DATE):
 			expectedAnswer = v.ANSWER_DATE
 		#added debug statement, to see if we expect the right thing /anco
-		v.printDebug("Expected type: " + expectedAnswer);
+		v.printDebug("Expected type: " + str(expectedAnswer));
 
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
