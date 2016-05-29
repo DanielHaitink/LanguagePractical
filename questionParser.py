@@ -163,7 +163,7 @@ def getExpectedAnswerURI(answer):
         URI  = getDomainURI(answer)
     return URI
 
-def isExpectedAnswerPerson(answer):
+def isExpectedAnswerPerson(answer,dataType):
     URI = answer
     for passWord in v.PASS_PERSON:
         if passWord in answer:
@@ -176,7 +176,7 @@ def isExpectedAnswerPerson(answer):
     return False
 
 #TODO probably not 100% correct
-def isExpectedAnswerLocation(answer):
+def isExpectedAnswerLocation(answer,dataType):
     URI = answer
     v.printDebug("url: "+str(URI))
     answerSplit = answer.split(",")
@@ -193,43 +193,52 @@ def isExpectedAnswerLocation(answer):
         return True
     return False
 
-def isExpectedAnswerDate(answer):
+def isExpectedAnswerDate(answer,dataType):
     # check xsd:date
     #can't be date if it is a uri
-    if(isURI(answer)):
-        return False
-    return True
+    v.printDebug("DATE"+str(answer))
+    #if not isURI(answer):
+    if dataType is not None and dataType == "http://www.w3.org/2001/XMLSchema#date":
+        return True
+    return False
 
-def isExpectedAnswerNumber(answer):
+def isExpectedAnswerNumber(answer,dataType):
     # check xsd:integer
     return True
 
-def isExpectedAnswerObject(answer):
+def isExpectedAnswerObject(answer, dataType):
     # Unsure how to check this
     return True
 
 # Give answer and expectedAnswer and it uses it to go to sub functions
-def isExpectedAnswerSwitch(answer, expectedAnswer):
+def isExpectedAnswerSwitch(answer, dataType, expectedAnswer):
     if expectedAnswer == v.ANSWER_PERSON:
-        return isExpectedAnswerPerson(answer)
+        return isExpectedAnswerPerson(answer, dataType)
     elif expectedAnswer == v.ANSWER_LOCATION:
-        return isExpectedAnswerLocation(answer)
+        return isExpectedAnswerLocation(answer, dataType)
     elif expectedAnswer == v.ANSWER_DATE:
-        return isExpectedAnswerDate(answer)
+        return isExpectedAnswerDate(answer, dataType)
     elif expectedAnswer == v.ANSWER_NUMBER:
-        return isExpectedAnswerNumber(answer)
+        return isExpectedAnswerNumber(answer, dataType)
     elif expectedAnswer == v.ANSWER_OBJECT:
-        return isExpectedAnswerObject(answer)
+        return isExpectedAnswerObject(answer, dataType)
     # Return True if expectedAnswer == ANSWER_UNKNOWN or something else
     return True
 
 #Check if it is the expected Answer type
-def isExpectedAnswer(answer, expectedAnswer):
+def isExpectedAnswer(answer,dataTypes, expectedAnswer):
+    counter = 0
+
     if expectedAnswer == v.ANSWER_UNKNOWN:
         return True
+
     for answerItem in answer:
-        if not isExpectedAnswerSwitch(answerItem, expectedAnswer):
+        currentDataType = None
+        if not dataTypes is None:
+            currentDataType = dataTypes[counter]
+        if not isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
             return False
+        counter += 1
     return True
 
 
@@ -284,12 +293,12 @@ def parseXofY(xml, expectedAnswer):
     #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
         print (property)
-        answers,titles = queryXofY(property, URI)
+        answers,titles = queryXofY(property, URI, False)
         if answers == None or answers == []:
             continue
         v.printDebug(answers)
         v.printDebug(expectedAnswer)
-        if not isExpectedAnswer(answers, expectedAnswer):
+        if not isExpectedAnswer(answers,None, expectedAnswer):
             answers = None
             continue
         else:
@@ -305,6 +314,8 @@ def parseWhoWhen(xml, expectedAnswer):
     answers = None
     firstAnswer = None
     titles = None
+    dataTypes = None
+
     t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
     if t:
         t=t[0]
@@ -354,12 +365,14 @@ def parseWhoWhen(xml, expectedAnswer):
     #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
         print (property)
-        answers,titles = queryXofY(property, URI)
+        answers,titles,dataTypes = queryXofY(property, URI, True)
         if answers == None or answers == []:
             continue
         v.printDebug(answers)
+        v.printDebug(titles)
         v.printDebug(expectedAnswer)
-        if not isExpectedAnswer(answers, expectedAnswer):
+
+        if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
             answers = None
             continue
         else:
