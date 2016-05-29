@@ -60,6 +60,8 @@ def preParseSentence(sentence):
 			expectedAnswer = v.ANSWER_OBJECT
 		elif containsFromList(whd, v.WHD_DATE):
 			expectedAnswer = v.ANSWER_DATE
+		#added debug statement, to see if we expect the right thing /anco
+		v.printDebug("Expected type: " + expectedAnswer);
 
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
@@ -71,7 +73,10 @@ def preParseSentence(sentence):
 	wws = alpinoXML.xpath('//node[@pos="verb"]')
 
 	if not listNoneCheck(wws):
-		if "zijn".lower() in getTreeWordList(wws[0], v.TYPE_LEMMA).lower(): #maybe add need of only 1 ww
+		#anco : also true with: waar is sven kramer geboren:
+		#if "zijn".lower() in getTreeWordList(wws[0], v.TYPE_LEMMA).lower(): #maybe add need of only 1 ww
+		# my check from assignment 4:
+		if(alpinoXML.xpath('//node[@stype="whquestion" and @root="ben" and @sc="copula" and ../../node[@pt="vnw"]]')):
 			solution = parseXofY(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
