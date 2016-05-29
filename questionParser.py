@@ -149,7 +149,6 @@ def findType(types, wantedTypeName):
 
 # Returns whether the URI contains one of the wanted types.
 def basicExpectedAnswer(answer, wantedTypeNames):
-    #answer seems to be sometimes a list..
     URI = answer
     if not isURI(answer):
         URI  = getDomainURI(answer)
@@ -164,8 +163,13 @@ def basicExpectedAnswer(answer, wantedTypeNames):
     return False
 
 def isExpectedAnswerPerson(answer):
+    for passWord in v.PASS_PERSON:
+        if passWord in answer:
+            return True
     if basicExpectedAnswer(answer, ["Person", "Agent"]):
         return True
+    #names = answer.split(" ")
+
     return False
 
 def isExpectedAnswerLocation(answer):
