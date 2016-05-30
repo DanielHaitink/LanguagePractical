@@ -243,6 +243,15 @@ def isExpectedAnswerNumber(answer,dataType):
 	v.printDebug(dataType)
 	if dataType is not None and dataType == v.DATATYPE_INTEGER:
 		return True
+	if (dataType == None or dataType == v.DATATYPE_STRING) and not isURI(answer):
+		AZAnswer = makeAZ(answer)
+		letterCount = 0
+		for letter in AZAnswer:
+			if letter.isdigit():
+				letterCount += 1
+		if (letterCount/len(AZAnswer)) >= 0.5:
+			return True
+	return False
 
 def isExpectedAnswerObject(answer, dataType):
 	# Unsure how to check this
