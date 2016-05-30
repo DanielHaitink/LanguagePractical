@@ -25,7 +25,7 @@ ANSWER_UNKNOWN = None
 WHD_LOCATION = ["waar"]
 WHD_PERSON = ["wie"]
 WHD_DATE = ["wanneer"]
-WHD_NUMBER = ["hoeveel"]
+WHD_NUMBER = ["hoeveel", "hoe"]
 WHD_OBJECT = ["welke"]
 
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]

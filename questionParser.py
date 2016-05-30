@@ -360,13 +360,19 @@ def parseWhereWhen(xml, expectedAnswer):
 	concept = None
 
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
-	if t:
-		t=t[0]
-		if t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False):
-			prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
-		else:
-			prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
-		concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+	t=t[0]
+	if t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False):
+		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
+	else:
+		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
+	concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+
+	return parseConceptProperty(concept,prop, expectedAnswer)
+
+def parseHow(xml, expectedAnswer):
+	t = xml.xpath('//node[@rel="whd" and @cat="ap"]')[0]
+	prop =  t.xpath('//node[@rel="hd"]', smart_strings=False)
+	concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)
 
 	return parseConceptProperty(concept,prop, expectedAnswer)
 
