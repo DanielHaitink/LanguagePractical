@@ -252,7 +252,7 @@ def parseXofY(xml, expectedAnswer):
     titles = None
 
     #find concept
-    names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
+    names = xml.xpath('//node[@rel="obj1" and @cat="np"  and ../@rel="mod"]')
     for name in names:
         concept = getTreeWordList(name,v.TYPE_WORD)
     if concept==None or concept=="":
