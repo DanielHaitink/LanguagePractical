@@ -273,23 +273,13 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
-# Parse question of type "Wie/wat is X van Y"
-def parseXofY(xml, expectedAnswer):
-    answers = None
-    firstAnswer = None
-    titles = None
-    concept = None
-    dataTypes = None
-
-    #find concept
-    names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
-    for name in names:
+def parseConceptProperty(concepts,properties):
+	for name in concepts:
         concept = getTreeWordList(name,v.TYPE_WORD)
     if concept==None or concept=="":
         return None
-    #find property
-    names = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
-    for name in names:
+   
+    for name in properties:
         property = getTreeWordList(name,v.TYPE_LEMMA)
     if property==None or property=="":
         v.printDebug("NO PROPERTY FOUND")
@@ -338,6 +328,22 @@ def parseXofY(xml, expectedAnswer):
         return titles
     return titles
 
+
+# Parse question of type "Wie/wat is X van Y"
+def parseXofY(xml, expectedAnswer):
+    answers = None
+    firstAnswer = None
+    titles = None
+    concept = None
+    dataTypes = None
+
+    #find concept
+    concept = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
+     #find property
+    property = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
+    return parseConceptProperty(concept, property)
+ 
+
 def parseWhereWhen(xml, expectedAnswer):
     #maybe idea to split the parse into more functions, lot of duplicate code this way.
     #Waar is Sven Kramer geboren werkt /wanneer geboren niet. Pakt nog steeds geboorteplaats als property
@@ -354,64 +360,9 @@ def parseWhereWhen(xml, expectedAnswer):
             prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
         else:
             prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
-        names =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+        concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
 
-     #find concept
-    for name in names:
-        concept = getTreeWordList(name,v.TYPE_WORD)
-    if concept==None or concept=="":
-        return None
-    #find property
-    for name in prop:
-        property = getTreeWordList(name,v.TYPE_LEMMA)
-    if property==None or property=="":
-        v.printDebug("NO PROPERTY FOUND")
-        return None
-
-    #find URI of concept
-    URI = getDomainURI(concept)
-    if URI == None:
-        # Remove articles from domain
-        # TODO only remove first article
-        URI = getDomainURI(removeArticles(concept))
-        if URI == None:
-            # No URI found
-            v.printDebug("NO URI FOUND IN WhoWhen")
-            v.printDebug(concept)
-            return None
-
-    #find properties of the concept
-    URIprops = findProperties(URI)
-    v.printDebug(URIprops)
-
-    #match properties using synonyms
-    synonyms = getSimilarWords(property)
-    v.printDebug(synonyms)
-
-    #TODO bestMatches lijkt het niet goed te doen
-    bestMatches = matchSynonymProperty(synonyms, URIprops)
-
-    #go through properties until expected answer is found
-    #TODO: only terminate if answer matches expected answer!
-    #TODO not only get answers, also get the XML information of the answer so it can classify correctly
-    for property in bestMatches:
-        v.printDebug (property)
-        answers,titles,dataTypes = queryXofY(property, URI, True)
-        if answers == None or answers == []:
-            continue
-        v.printDebug(answers)
-        v.printDebug(titles)
-        v.printDebug(expectedAnswer)
-
-        if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
-            answers = None
-            continue
-        else:
-            break
-    # Return the first answer found, At least it gives an answer
-    if answers == None:
-        return titles
-    return titles
+    return parseConceptProperty(concept,prop)
 
 
 # Parse question which wants a number
