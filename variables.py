@@ -5,6 +5,7 @@ __DEBUG__ = True
 #Files
 FILE_PAIRCOUNT = "pairCounts"
 FILE_SYNONYMS = "synonyms"
+FILE_NAMES = "names.txt"
 
 #Types of words alpino
 TYPE_SENSE = "sense"
@@ -28,6 +29,12 @@ WHD_NUMBER = ["hoeveel"]
 WHD_OBJECT = ["welke"]
 
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
+
+#dataTypes
+DATATYPE_INTEGER = "http://www.w3.org/2001/XMLSchema#integer"
+DATATYPE_DATE = "http://www.w3.org/2001/XMLSchema#date"
+DATATYPE_STRING = "http://www.w3.org/2001/XMLSchema#string"
+DATATYPE_MONTHDAY = "http://www.w3.org/2001/XMLSchema#gMonthDay"
 
 
 def printDebug(debug):

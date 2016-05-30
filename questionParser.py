@@ -1,7 +1,7 @@
 import sys, re, difflib
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
-from SPARQLQuery import queryXofY, queryGetTypes
+from SPARQLQuery import queryXofY, queryGetTypes, URITitle
 
 # Find all properties that the given URI has
 def findProperties(URI):
@@ -119,6 +119,12 @@ def findPropertySimilarWords(sentence):
         return None
     return getSimilarWords(removeArticles(bestProp))
 
+def inNamesCorpus(string):
+    for line in open(v.FILE_NAMES, "r"):
+        if re.search("^"+string+"$", line , re.IGNORECASE):
+            return True
+    return False
+
 # DOES NOT WORK CORRECTLY
 def matchSynonymProperty(synonyms, properties):
     #return sorted list of most likely properties
@@ -164,19 +170,40 @@ def getExpectedAnswerURI(answer):
     return URI
 
 def isExpectedAnswerPerson(answer,dataType):
+    if dataType is not None and (dataType == v.DATATYPE_DATE or dataType == v.DATATYPE_INTEGER):
+        return False
+    v.printDebug("DATATYPE = "+ str(dataType))
     URI = answer
+    title = answer
+
     for passWord in v.PASS_PERSON:
         if passWord in answer:
             return True
     if not isURI(answer):
         URI = getExpectedAnswerURI(answer)
-    if typesInURI(URI, ["Person", "Agent"]):
-        return True
-    #names = answer.split(" ")
+    if isURI(answer):
+        if typesInURI(URI, ["Person", "Agent"]):
+            return True
+
+        title = ""
+        tempTitle = URITitle(answer)
+        for item in tempTitle:
+            title += str(item)
+
+    if len(title) < 1:
+        return False
+
+    names = title.split(" ")
+    for name in names:
+        if name.isupper() and inNamesCorpus(name):
+            v.printDebug("FOUND NAME IN CORPUS " + str(name))
+            return True
     return False
 
 #TODO probably not 100% correct
 def isExpectedAnswerLocation(answer,dataType):
+    if dataType is not None and (dataType == v.DATATYPE_DATE or dataType == v.DATATYPE_INTEGER):
+        return False
     URI = answer
     v.printDebug("url: "+str(URI))
     answerSplit = answer.split(",")
@@ -198,13 +225,14 @@ def isExpectedAnswerDate(answer,dataType):
     #can't be date if it is a uri
     v.printDebug("DATE"+str(answer))
     #if not isURI(answer):
-    if dataType is not None and dataType == "http://www.w3.org/2001/XMLSchema#date":
+    if dataType is not None and dataType == v.DATATYPE_DATE:
         return True
     return False
 
 def isExpectedAnswerNumber(answer,dataType):
     # check xsd:integer
-    return True
+    if dataType is not None and dataType == v.DATATYPE_INTEGER:
+        return True
 
 def isExpectedAnswerObject(answer, dataType):
     # Unsure how to check this
@@ -250,6 +278,8 @@ def parseXofY(xml, expectedAnswer):
     answers = None
     firstAnswer = None
     titles = None
+    concept = None
+    dataTypes = None
 
     #find concept
     names = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
@@ -292,13 +322,13 @@ def parseXofY(xml, expectedAnswer):
     #TODO: only terminate if answer matches expected answer!
     #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
-        print (property)
-        answers,titles = queryXofY(property, URI, False)
+        v.printDebug (property)
+        answers,titles,dataTypes = queryXofY(property, URI, True)
         if answers == None or answers == []:
             continue
         v.printDebug(answers)
         v.printDebug(expectedAnswer)
-        if not isExpectedAnswer(answers,None, expectedAnswer):
+        if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
             answers = None
             continue
         else:
@@ -315,6 +345,7 @@ def parseWhoWhen(xml, expectedAnswer):
     firstAnswer = None
     titles = None
     dataTypes = None
+    concept = None
 
     t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
     if t:
@@ -364,7 +395,7 @@ def parseWhoWhen(xml, expectedAnswer):
     #TODO: only terminate if answer matches expected answer!
     #TODO not only get answers, also get the XML information of the answer so it can classify correctly
     for property in bestMatches:
-        print (property)
+        v.printDebug (property)
         answers,titles,dataTypes = queryXofY(property, URI, True)
         if answers == None or answers == []:
             continue
