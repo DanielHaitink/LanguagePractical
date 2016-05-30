@@ -7,3 +7,4 @@ Final assignment for the Language Practical
 - Hoe vragen (woorden als zwaar/lang etc.) --> ook preParser
 - EVT uitbreiden synonyms
 - Lijsten met antwoorden (Wie deden mee/Hoeveel deelnemers/Welke landen deden mee/etc.)
+- in welke plaats is x geboren oid.
