@@ -231,6 +231,7 @@ def isExpectedAnswerDate(answer,dataType):
 
 def isExpectedAnswerNumber(answer,dataType):
 	# check xsd:integer
+	v.printDebug(dataType)
 	if dataType is not None and dataType == v.DATATYPE_INTEGER:
 		return True
 
@@ -273,23 +274,12 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
-def parseConceptProperty(concepts,properties, expectedAnswer):
+def parseConceptProperty(concept,property, expectedAnswer):
 	answers = None
 	firstAnswer = None
 	titles = None
-	concept = None
 	dataTypes = None
 
-	for name in concepts:
-		concept = getTreeWordList(name,v.TYPE_WORD)
-	if concept==None or concept=="":
-		return None
-
-	for name in properties:
-		property = getTreeWordList(name,v.TYPE_LEMMA)
-	if property==None or property=="":
-		v.printDebug("NO PROPERTY FOUND")
-		return None
 
 	#find URI of concept
 	URI = getDomainURI(concept)
@@ -344,9 +334,20 @@ def parseXofY(xml, expectedAnswer):
 	dataTypes = None
 
 	#find concept
-	concept = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
+	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
 	 #find property
-	property = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
+	properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
+
+	for name in concepts:
+		concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		return None
+	for name in properties:
+		property = getTreeWordList(name,v.TYPE_LEMMA)
+	if property==None or property=="":
+		v.printDebug("NO PROPERTY FOUND")
+		return None
+
 	return parseConceptProperty(concept, property, expectedAnswer)
  
 
@@ -365,16 +366,41 @@ def parseWhereWhen(xml, expectedAnswer):
 		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
 	else:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
-	concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+	concepts =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
 
-	return parseConceptProperty(concept,prop, expectedAnswer)
+	for name in concepts:
+		concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		return None
+	
+	for name in prop:
+		property = getTreeWordList(name,v.TYPE_LEMMA)
+	if property==None or property=="":
+		v.printDebug("NO PROPERTY FOUND")
+		return None
+
+	return parseConceptProperty(concept,property, expectedAnswer)
 
 def parseHow(xml, expectedAnswer):
+	answers = None
+	firstAnswer = None
+	titles = None
+	dataTypes = None
+	concept = None
 	t = xml.xpath('//node[@rel="whd" and @cat="ap"]')[0]
 	prop =  t.xpath('//node[@rel="hd"]', smart_strings=False)
-	concept =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)
+	concepts =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)
 
-	return parseConceptProperty(concept,prop, expectedAnswer)
+	for name in concepts:
+		concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		return None
+	
+	property = getTreeWordList(prop[0],v.TYPE_WORD)
+	if property==None or property=="":
+		v.printDebug("NO PROPERTY FOUND")
+		return None
+	return parseConceptProperty(concept,property, expectedAnswer)
 
 
 # Parse question which wants a number
