@@ -1,7 +1,7 @@
 import socket, sys
 import variables as v
 from lxml import etree
-from questionParser import getTreeWordList, parseNumberOf, parseXofY, parseWhoWhen
+from questionParser import getTreeWordList, parseNumberOf, parseXofY, parseWhereWhen, parseHow
 
 # return true is something from list is in sentence, else false
 def containsFromList(sentence, list):
@@ -81,11 +81,18 @@ def preParseSentence(sentence):
 			if not solution is None:
 				return solution
 
-		# wanneer / waar vragen check
-		if(alpinoXML.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')):
-			solution = parseWhoWhen(alpinoXML, expectedAnswer)
+		if(alpinoXML.xpath('//node[@rel="whd" and @cat="ap"]')):	
+			solution = parseHow(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
+
+		# wanneer / waar vragen check
+		if(alpinoXML.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')):
+			solution = parseWhereWhen(alpinoXML, expectedAnswer)
+			if not solution is None:
+				return solution
+
+
 
 		# TODO: ADD MORE PARSE TYPES
 	return None
