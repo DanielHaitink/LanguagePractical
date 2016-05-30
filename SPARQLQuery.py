@@ -60,23 +60,21 @@ def queryXofY(property, URI, getDataType):
         return answers, titles, dataTypes
     return answers, titles
 
-def URITitle(URI):
+def basicQuery(URI, property):
     query = """
-    SELECT ?title
+    SELECT ?answer
     WHERE{
-    <%s> rdfs:label ?title
+    <%s> %s ?answer
     }
-    """ % (URI)
-
+    """ % (URI,property)
     return sendQuery(query, False)
+
+def URITitle(URI):
+    return basicQuery(URI, "rdfs:label")
+
+def getRedirectPage(URI):
+    return basicQuery(URI, "dbpedia-owl:wikiPageRedirects")
 
 # QUery for the type checking
 def queryGetTypes(URI):
-    query = """
-    SELECT ?answer
-
-    WHERE{
-    <%s> rdf:type ?answer
-    }
-    """ % (URI)
-    return sendQuery(query, False)
+    return basicQuery(URI, "rdf:type")
