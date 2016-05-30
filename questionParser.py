@@ -411,6 +411,30 @@ def parseHow(xml, expectedAnswer):
 		return None
 	return parseConceptProperty(concept,property, expectedAnswer)
 
+def parseVerbs(xml, expectedAnswer):
+
+	#//node[@rel="hd" and @pt="ww"]
+	#t = xml.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')[0]
+	#t=t[0]
+	#	index = t.get("index");
+	#	query = '//node[@index ="'+index+'"]'
+	#	part_prop = xml.xpath(query)[0].get("root")
+	
+	#print_tree( xml.xpath('//node[@rel="hd" and @stype="whquestion" and ../@rel="body"]', smart_strings=False)[0])
+	prop = xml.xpath('//node[@rel="hd" and @pt="ww"]', smart_strings=False)#stype="whquestion"
+	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
+		
+	for name in concepts:
+		concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		return None
+
+	property = getTreeWordList(prop[0],v.TYPE_LEMMA)
+	if property==None or property=="":
+		v.printDebug("NO PROPERTY FOUND")
+		return None
+	return parseConceptProperty(concept,property, expectedAnswer)
+
 
 # Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):
