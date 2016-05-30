@@ -8,3 +8,4 @@ Final assignment for the Language Practical
 - EVT uitbreiden synonyms
 - Lijsten met antwoorden (Wie deden mee/Hoeveel deelnemers/Welke landen deden mee/etc.)
 - in welke plaats is x geboren oid.
+- andersom vragen: wie debuteerde op de OS 2012? OS 2012 heeft geen property debuteerde, maar mensen hebben wel property debuut die OS 2012 kan zijn.
