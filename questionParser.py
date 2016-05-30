@@ -338,7 +338,7 @@ def parseXofY(xml, expectedAnswer):
         return titles
     return titles
 
-def parseWhoWhen(xml, expectedAnswer):
+def parseWhereWhen(xml, expectedAnswer):
     #maybe idea to split the parse into more functions, lot of duplicate code this way.
     #Waar is Sven Kramer geboren werkt /wanneer geboren niet. Pakt nog steeds geboorteplaats als property
     answers = None
