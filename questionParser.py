@@ -1,7 +1,7 @@
 import sys, re, difflib
 import variables as v
 from SPARQLWrapper import SPARQLWrapper, JSON
-from SPARQLQuery import queryXofY, queryGetTypes, URITitle
+from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage
 
 # Find all properties that the given URI has
 def findProperties(URI):
@@ -119,6 +119,14 @@ def findPropertySimilarWords(sentence):
 		return None
 	return getSimilarWords(removeArticles(bestProp))
 
+# Get redirected URI if it redirects
+def getRedirectedURI(URI):
+	redirectURIList = getRedirectPage(URI)
+	if redirectURIList is None or redirectURIList is [] or len(redirectURIList) < 1:
+		return URI
+	return redirectURIList[0]
+
+# Check if the exact name is found in the Names corpus
 def inNamesCorpus(string):
 	for line in open(v.FILE_NAMES, "r"):
 		if re.search("^"+string+"$", line , re.IGNORECASE):
@@ -150,7 +158,7 @@ def findType(types, wantedTypeName):
 		if wantedTypeName.lower() in currentType.lower():
 			return True
 		#if "http://dbpedia.org/ontology/" in currentType:
-		#    allTypes.append(currentType.split("http://dbpedia.org/ontology/",1)[1])
+		#	allTypes.append(currentType.split("http://dbpedia.org/ontology/",1)[1])
 	return False
 
 # Returns whether the URI contains one of the wanted types.
@@ -182,11 +190,12 @@ def isExpectedAnswerPerson(answer,dataType):
 	if not isURI(answer):
 		URI = getExpectedAnswerURI(answer)
 	if isURI(answer):
+		URI = getRedirectedURI(URI)
 		if typesInURI(URI, ["Person", "Agent"]):
 			return True
 
 		title = ""
-		tempTitle = URITitle(answer)
+		tempTitle = URITitle(URI)
 		for item in tempTitle:
 			title += str(item)
 
@@ -349,7 +358,7 @@ def parseXofY(xml, expectedAnswer):
 		return None
 
 	return parseConceptProperty(concept, property, expectedAnswer)
- 
+
 
 def parseWhereWhen(xml, expectedAnswer):
 	#maybe idea to split the parse into more functions, lot of duplicate code this way.
@@ -372,7 +381,7 @@ def parseWhereWhen(xml, expectedAnswer):
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
 		return None
-	
+
 	for name in prop:
 		property = getTreeWordList(name,v.TYPE_LEMMA)
 	if property==None or property=="":
@@ -395,7 +404,7 @@ def parseHow(xml, expectedAnswer):
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
 		return None
-	
+
 	property = getTreeWordList(prop[0],v.TYPE_WORD)
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
