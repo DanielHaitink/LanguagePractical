@@ -41,12 +41,26 @@ def queryXofY(property, URI, getDataType):
     <%s> prop-nl:%s ?answer
     }
     """ % (URI,property)
+
+    q2 = """
+    SELECT ?answer
+
+    WHERE{
+    ?answer prop-nl:%s <%s>
+    }
+    """ % (property,URI)
     v.printDebug(query)
 
     if getDataType:
         answers, dataTypes = sendQuery(query, getDataType)
+        if not answers:
+            v.printDebug("andersom question")
+            answers,dataTypes = sendQuery(q2, getDataType)
     else:
         answers = sendQuery(query, False)
+        if not answers:
+            v.printDebug("andersom question")
+            answers = sendQuery(q2, False)
     for answer in answers:
         if "nl.dbpedia" in answer:
             title = URITitle(answer)

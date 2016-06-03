@@ -22,11 +22,33 @@ def findProperties(URI):
 			answer = result[arg]["value"]
 			raw_properties.append(answer)
 
+	#below is also the "andersom" properties
+	query = """
+	SELECT DISTINCT ?prop   WHERE{
+    ?page ?prop <%s>
+    }
+	""" % (URI)
+
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()
+
+	for result in results["results"]["bindings"]:
+		for arg in result :
+			answer = result[arg]["value"]
+			raw_properties.append(answer)
+
+	#end of andersom properties
+
 	properties = []
 	for element in raw_properties:
 		if "nl.dbpedia.org/property" in element:
 			element = element.split("/")
 			properties.append(element[-1])
+
+	
+
+
 	return list(set(properties))
 
 #give alpino node and wordtype you want to extract see variables
@@ -276,7 +298,6 @@ def isExpectedAnswerSwitch(answer, dataType, expectedAnswer):
 #Check if it is the expected Answer type
 def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 	counter = 0
-
 	if expectedAnswer == v.ANSWER_UNKNOWN:
 		return True
 
