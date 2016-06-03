@@ -357,11 +357,12 @@ def parseXofY(xml, expectedAnswer):
 	dataTypes = None
 	property = None
 
-	#find concept
-	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
-	 #find property
-	properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
-
+    #find concept
+	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod" and (../../@rel="su" or ../../@rel="predc" )]', smart_strings=False)
+    #concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
+    #find property
+	#properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
+	properties = xml.xpath('//node[@pos="noun" and (../@rel="su" or ../@rel="predc")]', smart_strings=False)
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
