@@ -225,6 +225,7 @@ def isExpectedAnswerLocation(answer,dataType):
 		count += 1
 	if URI is None:
 		return False
+	URI = getRedirectedURI(URI)
 	if typesInURI(URI, ["Location", "Place", "Country", "City"]):
 		return True
 	return False
@@ -283,8 +284,11 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 		currentDataType = None
 		if not dataTypes is None:
 			currentDataType = dataTypes[counter]
-		if not isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
-			return False
+		# Test: If only one answer returns the right type, return True
+		#if not isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
+		#	return False
+		if isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
+			return True
 		counter += 1
 	return True
 
@@ -350,6 +354,7 @@ def parseXofY(xml, expectedAnswer):
 	titles = None
 	concept = None
 	dataTypes = None
+	property = None
 
 	#find concept
 	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
@@ -377,6 +382,7 @@ def parseWhereWhen(xml, expectedAnswer):
 	titles = None
 	dataTypes = None
 	concept = None
+	property = None
 
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
 	t=t[0]
