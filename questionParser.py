@@ -290,7 +290,8 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 		if isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
 			return True
 		counter += 1
-	return True
+	# Change to True if all have to be correct 
+	return False
 
 
 #TODO: -for each type of question, add function to parse it
@@ -434,11 +435,11 @@ def parseVerbs(xml, expectedAnswer):
 	#	index = t.get("index");
 	#	query = '//node[@index ="'+index+'"]'
 	#	part_prop = xml.xpath(query)[0].get("root")
-	
+
 	#print_tree( xml.xpath('//node[@rel="hd" and @stype="whquestion" and ../@rel="body"]', smart_strings=False)[0])
 	prop = xml.xpath('//node[@rel="hd" and @pt="ww"]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
-		
+
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
