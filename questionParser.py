@@ -297,14 +297,8 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 #TODO: -for each type of question, add function to parse it
 #- send parsed information to correct SPARQL query template
 
-def parseConceptProperty(concept,property, expectedAnswer):
-	answers = None
-	firstAnswer = None
-	titles = None
-	dataTypes = None
-
-
-	#find URI of concept
+def getResource(concept):
+	URI = None
 	URI = getDomainURI(concept)
 	if URI == None:
 		# Remove articles from domain
@@ -315,6 +309,25 @@ def parseConceptProperty(concept,property, expectedAnswer):
 			v.printDebug("NO URI FOUND IN XofY")
 			v.printDebug(concept)
 			return None
+
+	return URI
+
+def parseConceptProperty(concept,property, expectedAnswer):
+	answers = None
+	firstAnswer = None
+	titles = None
+	dataTypes = None
+	URI = None
+
+	#find URI of concept
+	if type(concept) is not list:
+		concept = [concept]
+
+	for c in concept:
+		URI = getResource(c)
+		if URI != None:
+			break
+	
 
 	#find properties of the concept
 	URIprops = findProperties(URI)
@@ -383,8 +396,9 @@ def parseWhereWhen(xml, expectedAnswer):
 	firstAnswer = None
 	titles = None
 	dataTypes = None
-	concept = None
+	concept = []
 	property = None
+	concepts =[]
 
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
 	t=t[0]
@@ -392,11 +406,12 @@ def parseWhereWhen(xml, expectedAnswer):
 		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
 	else:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
-	concepts =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False);
+	concepts.append(t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)[0]);
+	concepts.append(t.xpath('//node[@rel="obj1" and ../../@rel="su" and ../../../@rel="body"]', smart_strings=False)[0]);
 
 	for name in concepts:
-		concept = getTreeWordList(name,v.TYPE_WORD)
-	if concept==None or concept=="":
+		concept.append(getTreeWordList(name,v.TYPE_WORD))
+	if concept==None or concept=="" or (not concept):
 		return None
 
 	for name in prop:
