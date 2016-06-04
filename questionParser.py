@@ -339,7 +339,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 	titles = None
 	dataTypes = None
 	URI = None
-	v.printDebug("found concept: "+str(concept)+"property: "str(property))
+	v.printDebug("found concept: "+str(concept)+"property: "+str(property))
 	#find URI of concept
 	if type(concept) is not list:
 		concept = [concept]
@@ -428,7 +428,9 @@ def parseWhereWhen(xml, expectedAnswer):
 	else:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
 	concepts.append(t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)[0]);
-	concepts.append(t.xpath('//node[@rel="obj1" and ../../@rel="su" and ../../../@rel="body"]', smart_strings=False)[0]);
+	c = t.xpath('//node[@rel="obj1" and ../../@rel="su" and ../../../@rel="body"]', smart_strings=False)
+	if c:
+		concepts.append(c[0]);
 
 	for name in concepts:
 		concept.append(getTreeWordList(name,v.TYPE_WORD))
