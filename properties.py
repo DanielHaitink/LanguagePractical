@@ -8,6 +8,7 @@ def initSentence():
 	v.sentence = ""
 	v.nr = -1
 	v.prop = " "
+	v.GETONLYPROPERTIES = True
 
 def setSetence(s):
 	v.sentence = s;
@@ -26,11 +27,8 @@ def insertProperty():
 	for p in v.properties:
 		print(p[0])
 		if p[0] == v.prop:
-			print("added here" + str(p[0]) + "sentences" +str(p[1]))
 			p[1].append(str(v.nr)+" "+str(v.sentence))
-			print(v.properties)
 			return
-	print(v.properties)
 	v.properties.append([v.prop, [(str(v.nr)+" "+str(v.sentence))]])
 
 def printProperties():
