@@ -50,4 +50,4 @@ prop = ""
 sentence = ""
 nr = -1
 properties = []
-GETONLYPROPERTIES = True
+GETONLYPROPERTIES = False
