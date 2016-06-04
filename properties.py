@@ -25,7 +25,6 @@ def getKey(item):
 
 def insertProperty():
 	for p in v.properties:
-		print(p[0])
 		if p[0] == v.prop:
 			p[1].append(str(v.nr)+" "+str(v.sentence))
 			return
@@ -38,8 +37,8 @@ def printProperties():
 	for p in prop:
 		sen = ""
 		for s in p[1]:
-			sen = sen + " " + s
-		print(str(getKey(p))+ " "+str(p[0]) + " " + sen)
+			sen = sen + "\t" + s
+		print(str(getKey(p))+ "\t"+str(p[0]) + "\t" + sen)
 
 
 
@@ -66,6 +65,7 @@ def showHelp():
 
 # set counter for solutionID
 counter = 0
+
 for line in sys.stdin:
 	initSentence()
 
@@ -94,7 +94,7 @@ for line in sys.stdin:
 	if sentence is None or sentence is "":
 		v.printDebug("No sentence given")
 		continue
-
+	print(str(solutionID), file=sys.stderr)
 	setSetence(sentence)
 	# Go to preParse and wait for return
 	solutionList = preParseSentence(line)

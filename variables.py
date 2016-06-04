@@ -1,6 +1,6 @@
 import sys
 
-__DEBUG__ = False
+__DEBUG__ = True
 
 #Files
 FILE_PAIRCOUNT = "pairCounts"
