@@ -46,7 +46,7 @@ def findProperties(URI):
 			element = element.split("/")
 			properties.append(element[-1])
 
-	
+
 
 
 	return list(set(properties))
@@ -311,7 +311,7 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 		if isExpectedAnswerSwitch(answerItem, currentDataType, expectedAnswer):
 			return True
 		counter += 1
-	# Change to True if all have to be correct 
+	# Change to True if all have to be correct
 	return False
 
 
@@ -348,7 +348,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 		URI = getResource(c)
 		if URI != None:
 			break
-	
+
 
 	#find properties of the concept
 	URIprops = findProperties(URI)
@@ -495,5 +495,16 @@ def parseVerbs(xml, expectedAnswer):
 def parseNumberOf(xml, expectedAnswer):
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
+	properties = xml.xpath('//node[@rel="hd" and ../@rel="body"]')
+	concepts = xml.xpath('//node[@rel="hd" and ../@rel="body"]')
+	for name in concepts:
+		concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		return None
+	for name in properties:
+		property = getTreeWordList(name,v.TYPE_LEMMA)
+	if property==None or property=="":
+		v.printDebug("NO PROPERTY FOUND")
+		return None
 
 	return None

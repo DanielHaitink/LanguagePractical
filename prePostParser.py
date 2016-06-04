@@ -77,22 +77,26 @@ def preParseSentence(sentence):
 		#if "zijn".lower() in getTreeWordList(wws[0], v.TYPE_LEMMA).lower(): #maybe add need of only 1 ww
 		# my check from assignment 4:
 		if(alpinoXML.xpath('//node[@stype="whquestion" and @root="ben" and @sc="copula" and ../../node[@pt="vnw"]]')):
+			v.printDebug("Parsing as a X of Y question")
 			solution = parseXofY(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
 
-		if(alpinoXML.xpath('//node[@rel="whd" and @cat="ap"]')):	
+		if(alpinoXML.xpath('//node[@rel="whd" and @cat="ap"]')):
+			v.printDebug("Parsing as a how question")
 			solution = parseHow(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
 
 		# wanneer / waar vragen check
 		if(alpinoXML.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')):
+			v.printDebug("Parsing as a where/when question")
 			solution = parseWhereWhen(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
 
 		if(alpinoXML.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')):
+			v.printDebug("Parsing as a verbs question")
 			solution = parseVerbs(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
