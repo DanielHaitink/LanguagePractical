@@ -467,7 +467,11 @@ def parseHow(xml, expectedAnswer):
 	return parseConceptProperty(concept,property, expectedAnswer)
 
 def parseVerbs(xml, expectedAnswer):
-
+	answers = None
+	firstAnswer = None
+	titles = None
+	dataTypes = None
+	concept = None
 	#//node[@rel="hd" and @pt="ww"]
 	#t = xml.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')[0]
 	#t=t[0]
