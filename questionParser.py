@@ -339,7 +339,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 	titles = None
 	dataTypes = None
 	URI = None
-
+	v.printDebug("found concept: "+str(concept)+"property: "str(property))
 	#find URI of concept
 	if type(concept) is not list:
 		concept = [concept]
