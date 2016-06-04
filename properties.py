@@ -24,20 +24,24 @@ def getKey(item):
 
 def insertProperty():
 	for p in v.properties:
+		print(p[0])
 		if p[0] == v.prop:
+			print("added here" + str(p[0]) + "sentences" +str(p[1]))
 			p[1].append(str(v.nr)+" "+str(v.sentence))
+			print(v.properties)
 			return
-
+	print(v.properties)
 	v.properties.append([v.prop, [(str(v.nr)+" "+str(v.sentence))]])
 
 def printProperties():
-	sen = ""
+	
 
 	prop = sorted(v.properties, key=getKey, reverse=True)
 	for p in prop:
+		sen = ""
 		for s in p[1]:
 			sen = sen + " " + s
-			print(str(getKeyp(p))+ " "+str(p[0]) + " " + sen)
+		print(str(getKey(p))+ " "+str(p[0]) + " " + sen)
 
 
 

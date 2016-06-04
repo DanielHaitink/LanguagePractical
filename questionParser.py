@@ -352,6 +352,9 @@ def parseConceptProperty(concept,property, expectedAnswer):
 	
 	####### used to get all properties out of sample questions, not needed later on..
 	v.prop = property
+	if(v.GETONLYPROPERTIES):
+		#print("returning now")
+		return None
 
 
 	#find properties of the concept
