@@ -1,6 +1,6 @@
 import sys
 
-__DEBUG__ = True
+__DEBUG__ = False
 
 #Files
 FILE_PAIRCOUNT = "pairCounts"
@@ -44,3 +44,9 @@ def printDebug(debug):
 def printError(debug, exception):
 	if __DEBUG__:
 		print(debug+ " " + exception, file=sys.stderr)
+
+#variables used to extract all given properties from sentences.. can be removed later on
+prop = ""
+sentence = ""
+nr = -1
+properties = []

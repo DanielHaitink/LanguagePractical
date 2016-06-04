@@ -349,6 +349,8 @@ def parseConceptProperty(concept,property, expectedAnswer):
 		if URI != None:
 			break
 	
+	####### used to get all properties out of sample questions, not needed later on..
+	v.prop = property
 
 	#find properties of the concept
 	URIprops = findProperties(URI)
