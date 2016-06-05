@@ -51,3 +51,17 @@ sentence = ""
 nr = -1
 properties = []
 GETONLYPROPERTIES = False
+
+#Example questions for easy testing
+QUESTIONS = [\
+    "Hoe lang is Usain Bolt?",
+    "Waar is Usain Bolt geboren?",
+    "Wie organiseert de Olympische Spelen?",
+    "Waar werden de Olympische Winterspelen 2006 gehouden?",
+    "Door wie wordt Usain Bolt gecoacht?",
+    "Wie traint Usain Bolt?",
+    "Wie ontwierp het Beijing National Aquatics Center?",
+    "Wie opende de Olympische Zomerspelen 2012?",
+    "Hoe zwaar is Ranomi Kromowidjojo?",
+    "Hoeveel deelnemers hadden de Olympische Zomerspelen van 2012?",
+	]

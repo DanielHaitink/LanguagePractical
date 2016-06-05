@@ -24,8 +24,16 @@ def showHelp():
 	print("To exit the program type exit or use CTRL+D")
 	input("PRESS THE ENTER KEY TO CONTINUE...")
 
+def printExampleQuestions():
+	n=1
+	print ("Example questions: type a number to query this question")
+	for q in v.QUESTIONS:
+		print (str(n) + ". " + q)
+		n+=1
+
 # set counter for solutionID
 counter = 0
+printExampleQuestions()
 for line in sys.stdin:
 	# Default vars
 	counter += 1
@@ -38,6 +46,9 @@ for line in sys.stdin:
 	if line == "help\n":
 		showHelp()
 		continue
+
+	if line.rstrip().isdigit():
+		line = v.QUESTIONS[int(line)-1]
 
 	# See if a TAB is occuring, if so use the number before the TAB, else use counter
 	if "\t" in line:

@@ -518,4 +518,6 @@ def parseNumberOf(xml, expectedAnswer):
 		v.printDebug("NO PROPERTY FOUND")
 		return None
 
+	v.printDebug(property)
+	v.printDebug(concept)
 	return parseConceptProperty(concept,property, expectedAnswer)
