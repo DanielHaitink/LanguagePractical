@@ -349,7 +349,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 		if URI != None:
 			break
 
-	
+
 	####### used to get all properties out of sample questions, not needed later on..
 	v.prop = property
 	if(v.GETONLYPROPERTIES):
@@ -506,16 +506,16 @@ def parseVerbs(xml, expectedAnswer):
 def parseNumberOf(xml, expectedAnswer):
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
-	properties = xml.xpath('//node[@rel="hd" and ../@rel="body"]')
-	concepts = xml.xpath('//node[@rel="hd" and ../@rel="body"]')
+	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
+	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
 		return None
 	for name in properties:
-		property = getTreeWordList(name,v.TYPE_LEMMA)
+		property = getTreeWordList(name,v.TYPE_WORD)
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
 
-	return None
+	return parseConceptProperty(concept,property, expectedAnswer)

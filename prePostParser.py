@@ -95,14 +95,16 @@ def preParseSentence(sentence):
 			if not solution is None:
 				return solution
 
+		'''
 		#TODO: check using XML
 		if(sentence.split(" ")[0]=="Hoeveel"):
 			v.printDebug("Parsing as a number question")
-			solution = parseNumber(alpinoXML, expectedAnswer)
+			solution = parseNumberOf(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
+		'''
 
-		if(alpinoXML.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')):
+		if(alpinoXML.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]') and not sentence.split(" ")[0]=="Hoeveel"):
 			v.printDebug("Parsing as a verbs question")
 			solution = parseVerbs(alpinoXML, expectedAnswer)
 			if not solution is None:
