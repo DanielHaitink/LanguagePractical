@@ -65,4 +65,5 @@ QUESTIONS = [\
     "Hoe zwaar is Ranomi Kromowidjojo?",
     "Hoeveel deelnemers hadden de Olympische Zomerspelen van 2012?",
     "Hoeveel deelnemers had China op de Olympische Zomerspelen van 1012?",
+    "Hoeveel atleten deden er mee aan de Olympische Winterspelen van 2014?",
 	]
