@@ -95,7 +95,7 @@ def getDomainURI(concept):
 		if re.search("^"+concept, line, re.IGNORECASE): #search concept in pairCounts
 			line = line.rstrip()
 			line = line.split("\t") #split lines by tabs to separate elements
-			if int(line[2])>max: #if occurcences is higher than the maximum found until now:
+			if len(line) > 1 and int(line[2])>max: #if occurcences is higher than the maximum found until now:
 				max = int(line[2]) #new maximum amount of occurences
 				URI = line[1] #store URI
 	return URI
@@ -458,6 +458,7 @@ def parseHow(xml, expectedAnswer):
 	titles = None
 	dataTypes = None
 	concept = None
+
 	t = xml.xpath('//node[@rel="whd" and @cat="ap"]')[0]
 	prop =  t.xpath('//node[@rel="hd"]', smart_strings=False)
 	concepts =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)
@@ -478,6 +479,7 @@ def parseVerbs(xml, expectedAnswer):
 	firstAnswer = None
 	titles = None
 	dataTypes = None
+	property = None
 	concept = None
 	#//node[@rel="hd" and @pt="ww"]
 	#t = xml.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')[0]
@@ -504,6 +506,13 @@ def parseVerbs(xml, expectedAnswer):
 
 # Parse question which wants a number
 def parseNumberOf(xml, expectedAnswer):
+	answers = None
+	firstAnswer = None
+	titles = None
+	dataTypes = None
+	property = None
+	concept = None
+
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
 	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
