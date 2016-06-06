@@ -2,6 +2,8 @@ import sys
 
 __DEBUG__ = True
 
+SIMILARITY_THRESHOLD = 0.4
+
 #Files
 FILE_PAIRCOUNT = "pairCounts"
 FILE_SYNONYMS = "synonyms"

@@ -175,7 +175,8 @@ def matchSynonymProperty(synonyms, properties):
 			similarity = difflib.SequenceMatcher(a=property, b=synonym).ratio()
 			if similarity > currentMax:
 				currentMax = similarity
-		bestMatches.append([currentMax, property])
+		if currentMax > v.SIMILARITY_THRESHOLD: #only if similarity is higher than 0.4
+			bestMatches.append([currentMax, property])
 	return [t[1] for t in sorted(bestMatches, reverse=True)]
 
 def isURI(string):
@@ -546,4 +547,5 @@ def parseNumberOf(xml, expectedAnswer):
 
 	v.printDebug(property)
 	v.printDebug(concept)
-	return parseConceptProperty(concept,property, expectedAnswer)
+
+	parseConceptProperty(concept,property, expectedAnswer)
