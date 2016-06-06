@@ -272,7 +272,7 @@ def isExpectedAnswerNumber(answer,dataType):
 		for letter in AZAnswer:
 			if letter.isdigit():
 				letterCount += 1
-		if (letterCount/len(AZAnswer)) >= 0.5:
+		if len(AZAnswer) > 0  and (letterCount/len(AZAnswer)) >= 0.5:
 			return True
 	return False
 
