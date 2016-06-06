@@ -378,6 +378,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 	#TODO bestMatches lijkt het niet goed te doen
 	bestMatches = matchSynonymProperty(synonyms, URIprops)
 
+
 	#go through properties until expected answer is found
 	#TODO: only terminate if answer matches expected answer!
 	#TODO not only get answers, also get the XML information of the answer so it can classify correctly
