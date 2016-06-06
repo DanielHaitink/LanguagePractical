@@ -192,6 +192,12 @@ def typesInURI(URI, wantedTypeNames):
 			return True
 	return False
 
+def isInDataType(inputDataType, checkDataType):
+	for item in checkDataType:
+		if inputDataType == item:
+			return True
+	return False
+
 # get URI of answer
 def getExpectedAnswerURI(answer):
 	URI = answer
@@ -200,7 +206,7 @@ def getExpectedAnswerURI(answer):
 	return URI
 
 def isExpectedAnswerPerson(answer,dataType):
-	if dataType is not None and (dataType == v.DATATYPE_DATE or dataType == v.DATATYPE_INTEGER):
+	if dataType is not None and (isInDataType(dataType, v.DATATYPE_DATE) or isInDataType(dataType, v.DATATYPE_INTEGER)):
 		return False
 	v.printDebug("DATATYPE = "+ str(dataType))
 	URI = answer
@@ -233,7 +239,7 @@ def isExpectedAnswerPerson(answer,dataType):
 
 #TODO probably not 100% correct
 def isExpectedAnswerLocation(answer,dataType):
-	if dataType is not None and (dataType == v.DATATYPE_DATE or dataType == v.DATATYPE_INTEGER):
+	if dataType is not None and (isInDataType(dataType, v.DATATYPE_DATE) or isInDataType(dataType, v.DATATYPE_INTEGER)):
 		return False
 	URI = answer
 	v.printDebug("url: "+str(URI))
@@ -257,16 +263,16 @@ def isExpectedAnswerDate(answer,dataType):
 	#can't be date if it is a uri
 	v.printDebug("DATE"+str(answer))
 	#if not isURI(answer):
-	if dataType is not None and dataType == v.DATATYPE_DATE:
+	if dataType is not None and isInDataType(dataType, v.DATATYPE_DATE):
 		return True
 	return False
 
 def isExpectedAnswerNumber(answer,dataType):
 	# check xsd:integer
 	v.printDebug(dataType)
-	if dataType is not None and dataType == v.DATATYPE_INTEGER:
+	if dataType is not None and isInDataType(dataType, v.DATATYPE_INTEGER):
 		return True
-	if (dataType == None or dataType == v.DATATYPE_STRING) and not isURI(answer):
+	if (dataType == None or isInDataType(dataType, v.DATATYPE_STRING) and not isURI(answer)):
 		AZAnswer = makeAZ(answer)
 		letterCount = 0
 		for letter in AZAnswer:
