@@ -118,10 +118,20 @@ def getAllSimilarProperties(prop, allProperties):
 	outList += sw
 	return outList
 
+def removeUnderscore(string):
+	return string.replace("_", "")
+
+def replaceUnderscore(string, replace = " "):
+	return string.replace("_", " ")
+
 #search fot similar words
 def getSimilarWords(string):
 	returnList = []
 	searchList = search(string, v.FILE_SYNONYMS)
+	if not searchList:
+		searchList = search(removeUnderscore(string), v.FILE_SYNONYMS)
+		if not searchList:
+			searchList = search(replaceUnderscore(string), v.FILE_SYNONYMS)
 	for item in searchList:
 		returnList += item.split("#")
 	if not returnList:
