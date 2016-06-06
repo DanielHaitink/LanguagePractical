@@ -67,3 +67,6 @@ similarwords
 
 #Apple files
 .DS_Store
+
+#Anco's rotzooi
+.~lock.properties.csv#
