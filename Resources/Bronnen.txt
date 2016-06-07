@@ -1,0 +1,4 @@
+Name Corpus
+
+https://www.meertens.knaw.nl/nvb/
+https://www.cs.cmu.edu/Groups/AI/areas/nlp/corpora/names/0.html
