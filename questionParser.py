@@ -531,7 +531,7 @@ def parseNumberOf(xml, expectedAnswer):
 	property = None
 	concept = ""
 
-
+	print ("asdf")
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
 	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
@@ -575,7 +575,7 @@ def parseNumberOf(xml, expectedAnswer):
 
 	answer = parseConceptProperty(concept,property, expectedAnswer, 0.8)
 
-	if len(answer)>1:
+	if answer != None and len(answer)>1:
 		return [len(answer)]
 	else:
 		return answer
