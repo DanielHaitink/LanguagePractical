@@ -535,7 +535,7 @@ def parseNumberOf(xml, expectedAnswer):
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
 	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
-
+	'''
 	#concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body") or @rel="su"]')
 	concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body")]')
 	if not concepts:
@@ -546,6 +546,19 @@ def parseNumberOf(xml, expectedAnswer):
 		concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
 		for name in concepts:
 			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
+	'''
+
+	concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body") or @rel="su"]')
+	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
+	for name in concepts:
+		concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
+	if concept==None or concept=="" or concept == " ":
+		concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
+		for name in concepts:
+			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
+	if concept==None or concept=="" or concept == " ":
+		return None
+	concept = concept.strip()
 
 	v.printDebug("concept" + concept)
 	if concept==None or concept=="" or concept == " ":
@@ -560,4 +573,9 @@ def parseNumberOf(xml, expectedAnswer):
 	v.printDebug(property)
 	v.printDebug(concept)
 
-	return parseConceptProperty(concept,property, expectedAnswer, 0.9)
+	answer = parseConceptProperty(concept,property, expectedAnswer, 0.8)
+
+	if len(answer)>1:
+		return [len(answer)]
+	else:
+		return answer
