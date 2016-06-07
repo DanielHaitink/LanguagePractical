@@ -65,7 +65,6 @@ for line in sys.stdin:
 
 	# Go to preParse and wait for return
 	solutionList = preParseSentence(line)
-
 	# Print the answer
 	print(formatAnswer(solutionID, solutionList))
 v.printDebug("Terminating Program!")
