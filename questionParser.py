@@ -91,7 +91,7 @@ def getDomainURI(concept):
 	max = 0
 	URI = None
 	words = None
-	for line in open("pairCounts", 'r'):
+	for line in open(v.FILE_PAIRCOUNT, 'r'):
 		if re.search("^"+concept, line, re.IGNORECASE): #search concept in pairCounts
 			line = line.rstrip()
 			line = line.split("\t") #split lines by tabs to separate elements
@@ -283,7 +283,7 @@ def isExpectedAnswerNumber(answer,dataType):
 	v.printDebug(dataType)
 	if dataType is not None and isInDataType(dataType, v.DATATYPE_INTEGER):
 		return True
-	if (dataType == None or isInDataType(dataType, v.DATATYPE_STRING) and not isURI(answer)):
+	if ((dataType == None or not isInDataType(dataType, v.DATATYPE_DATE)) and not isURI(answer)):
 		AZAnswer = makeAZ(answer)
 		letterCount = 0
 		for letter in AZAnswer:

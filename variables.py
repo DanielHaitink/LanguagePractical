@@ -5,9 +5,9 @@ __DEBUG__ = True
 SIMILARITY_THRESHOLD = 0.4
 
 #Files
-FILE_PAIRCOUNT = "pairCounts"
-FILE_SYNONYMS = "synonyms"
-FILE_NAMES = "names.txt"
+FILE_PAIRCOUNT = "Resources/pairCounts"
+FILE_SYNONYMS = "Resources/synonyms"
+FILE_NAMES = "Resources/names.txt"
 
 #Types of words alpino
 TYPE_SENSE = "sense"
@@ -33,10 +33,21 @@ WHD_OBJECT = ["welke"]
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
 
 #dataTypes
-DATATYPE_INTEGER = ["http://www.w3.org/2001/XMLSchema#integer"]
-DATATYPE_DATE = ["http://www.w3.org/2001/XMLSchema#date", "http://www.w3.org/2001/XMLSchema#gMonthDay", "http://www.w3.org/2001/XMLSchema#gMonth"]
+DATATYPE_INTEGER = ["http://www.w3.org/2001/XMLSchema#integer",
+"http://www.w3.org/2001/XMLSchema#double",
+"http://www.w3.org/2001/XMLSchema#float",
+"http://www.w3.org/2001/XMLSchema#negativeInteger",
+"http://www.w3.org/2001/XMLSchema#nonNegativeInteger",
+"http://www.w3.org/2001/XMLSchema#nonPositiveInteger",
+"http://www.w3.org/2001/XMLSchema#positiveInteger"]
+DATATYPE_DATE = ["http://www.w3.org/2001/XMLSchema#date",
+"http://www.w3.org/2001/XMLSchema#gMonthDay",
+"http://www.w3.org/2001/XMLSchema#gMonth",
+"http://www.w3.org/2001/XMLSchema#gDay",
+"http://www.w3.org/2001/XMLSchema#gYear",
+"http://www.w3.org/2001/XMLSchema#gYearMonth",
+"http://www.w3.org/2001/XMLSchema#dateTime"]
 DATATYPE_STRING = ["http://www.w3.org/2001/XMLSchema#string"]
-DATATYPE_MONTHDAY = ["http://www.w3.org/2001/XMLSchema#gMonthDay"]
 
 
 def printDebug(debug):
@@ -55,7 +66,7 @@ properties = []
 GETONLYPROPERTIES = False
 
 #Example questions for easy testing
-QUESTIONS = [\
+QUESTIONS = [
     "Hoe lang is Usain Bolt?",
     "Waar is Usain Bolt geboren?",
     "Wie organiseert de Olympische Spelen?",
@@ -66,6 +77,7 @@ QUESTIONS = [\
     "Wie opende de Olympische Zomerspelen 2012?",
     "Hoe zwaar is Ranomi Kromowidjojo?",
     "Hoeveel deelnemers hadden de Olympische Zomerspelen van 2012?",
-    "Hoeveel deelnemers had China op de Olympische Zomerspelen van 1012?",
-    "Hoeveel atleten deden er mee aan de Olympische Winterspelen van 2014?",
+	"Wie heeft de Olympische Zomerspelen van 1936 geopend?",
+	"Wanneer opende Adolf Hitler de Olympishe Spelen?",
+	"Door wie zijn de Olympische Spelen van 1936 geopend?",
 	]

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 #environment set so that can use ./main.py
-import sys
+import sys, os.path
 import variables as v
 from prePostParser import preParseSentence
+
 
 # Format the answer the correct way
 def formatAnswer(solutionID, solutionList):
@@ -18,6 +19,18 @@ def formatAnswer(solutionID, solutionList):
 		solutionString += str(item) + "\t"
 	return solutionString
 
+def errorFileNotFound(fileName):
+	sys.exit("FATAL ERROR: MISSING %s FILE, PLEASE MAKE SURE YOU HAVE THAT FILE IN THE RESOURCE FOLDER" %(fileName))
+
+def checkFilesExist():
+	if not os.path.isfile("./" + v.FILE_NAMES):
+		errorFileNotFound(v.FILE_NAMES)
+	if not os.path.isfile("./" + v.FILE_SYNONYMS):
+		errorFileNotFound(v.FILE_SYNONYMS)
+	if not os.path.isfile("./" + v.FILE_PAIRCOUNT):
+		errorFileNotFound(v.FILE_PAIRCOUNT)
+	return
+
 #Shows help
 def showHelp():
 	#TODO maybe add more?
@@ -30,6 +43,8 @@ def printExampleQuestions():
 	for q in v.QUESTIONS:
 		print (str(n) + ". " + q)
 		n+=1
+
+checkFilesExist()
 
 # set counter for solutionID
 counter = 0
@@ -48,7 +63,7 @@ for line in sys.stdin:
 		continue
 
 	if line.rstrip().isdigit():
-		line = v.QUESTIONS[int(line)-1]
+		line = str(line.rstrip()) + "\t" + str(v.QUESTIONS[int(line)-1])
 
 	# See if a TAB is occuring, if so use the number before the TAB, else use counter
 	if "\t" in line:
@@ -64,7 +79,7 @@ for line in sys.stdin:
 		continue
 
 	# Go to preParse and wait for return
-	solutionList = preParseSentence(line)
+	solutionList = preParseSentence(sentence)
 
 	# Print the answer
 	print(formatAnswer(solutionID, solutionList))
