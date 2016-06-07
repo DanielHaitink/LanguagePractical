@@ -166,7 +166,7 @@ def inNamesCorpus(string):
 	return False
 
 # DOES NOT WORK CORRECTLY
-def matchSynonymProperty(synonyms, properties):
+def matchSynonymProperty(synonyms, properties, threshold = v.SIMILARITY_THRESHOLD):
 	#return sorted list of most likely properties
 	bestMatches = []
 	for property in properties:
@@ -175,7 +175,7 @@ def matchSynonymProperty(synonyms, properties):
 			similarity = difflib.SequenceMatcher(a=property, b=synonym).ratio()
 			if similarity > currentMax:
 				currentMax = similarity
-		if currentMax > v.SIMILARITY_THRESHOLD: #only if similarity is higher than 0.4
+		if currentMax > threshold: #only if similarity is higher than 0.4
 			bestMatches.append([currentMax, property])
 	return [t[1] for t in sorted(bestMatches, reverse=True)]
 
@@ -350,7 +350,7 @@ def getResource(concept):
 
 	return URI
 
-def parseConceptProperty(concept,property, expectedAnswer):
+def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILARITY_THRESHOLD):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -383,7 +383,7 @@ def parseConceptProperty(concept,property, expectedAnswer):
 	v.printDebug(synonyms)
 
 	#TODO bestMatches lijkt het niet goed te doen
-	bestMatches = matchSynonymProperty(synonyms, URIprops)
+	bestMatches = matchSynonymProperty(synonyms, URIprops, threshold)
 
 
 	#go through properties until expected answer is found
@@ -555,4 +555,4 @@ def parseNumberOf(xml, expectedAnswer):
 	v.printDebug(property)
 	v.printDebug(concept)
 
-	parseConceptProperty(concept,property, expectedAnswer)
+	parseConceptProperty(concept,property, expectedAnswer, 0.9)
