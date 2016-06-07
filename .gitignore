@@ -69,4 +69,5 @@ similarwords
 .DS_Store
 
 #Anco's rotzooi
-.~lock
+.~lock*
+.~lock.properties.csv#
