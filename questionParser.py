@@ -244,7 +244,7 @@ def isExpectedAnswerPerson(answer,dataType):
 
 	names = title.split(" ")
 	for name in names:
-		if name.isupper() and inNamesCorpus(name):
+		if len(name) > 0 and name[0].isupper() and inNamesCorpus(name):
 			v.printDebug("FOUND NAME IN CORPUS " + str(name))
 			return True
 	return False
@@ -273,7 +273,7 @@ def isExpectedAnswerLocation(answer,dataType):
 	prop = findProperties(URI, both=False)
 	for p in prop:
 		if p == "inwoners":
-			return True; 
+			return True;
 	return False
 
 def isExpectedAnswerDate(answer,dataType):
