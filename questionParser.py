@@ -4,7 +4,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage
 
 # Find all properties that the given URI has
-def findProperties(URI):
+def findProperties(URI, both=True):
 	query = """
 	SELECT ?property
 	WHERE {<%s> ?property ?value  }
@@ -23,22 +23,23 @@ def findProperties(URI):
 			raw_properties.append(answer)
 
 	#below is also the "andersom" properties
-	query = """
-	SELECT DISTINCT ?prop   WHERE{
-    ?page ?prop <%s>
-    }
-	""" % (URI)
+	if both:
+		query = """
+		SELECT DISTINCT ?prop   WHERE{
+	    ?page ?prop <%s>
+	    }
+		""" % (URI)
 
-	sparql.setQuery(query)
-	sparql.setReturnFormat(JSON)
-	results = sparql.query().convert()
+		sparql.setQuery(query)
+		sparql.setReturnFormat(JSON)
+		results = sparql.query().convert()
 
-	for result in results["results"]["bindings"]:
-		for arg in result :
-			answer = result[arg]["value"]
-			raw_properties.append(answer)
+		for result in results["results"]["bindings"]:
+			for arg in result :
+				answer = result[arg]["value"]
+				raw_properties.append(answer)
 
-	#end of andersom properties
+		#end of andersom properties
 
 	properties = []
 	for element in raw_properties:
@@ -267,6 +268,12 @@ def isExpectedAnswerLocation(answer,dataType):
 	URI = getRedirectedURI(URI)
 	if typesInURI(URI, ["Location", "Place", "Country", "City"]):
 		return True
+	#if page has property inwoners, assume it is a location
+	#maybe more are to be added
+	prop = findProperties(URI, both=False)
+	for p in prop:
+		if p == "inwoners":
+			return True; 
 	return False
 
 def isExpectedAnswerDate(answer,dataType):

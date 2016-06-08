@@ -80,4 +80,6 @@ QUESTIONS = [
 	"Wie heeft de Olympische Zomerspelen van 1936 geopend?",
 	"Wanneer opende Adolf Hitler de Olympishe Spelen?",
 	"Door wie zijn de Olympische Spelen van 1936 geopend?",
+	"Hoeveel atleten namen deel aan de Olympische Zomerspelen van 2008?",
+	"Hoeveel landen namen deel aan de Olympische Zomerspelen van 2008?",
 	]
