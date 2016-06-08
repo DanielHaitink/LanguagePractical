@@ -455,8 +455,12 @@ def parseWhereWhen(xml, expectedAnswer):
 
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
 	t=t[0]
-	if t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False):
-		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart"]', smart_strings=False);
+	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
+		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False);
+	#elif xml.xpath('//node[@cat="mwu"]'):
+	#	print ("right one")
+	#	prop = t.xpath('//node[@rel="hd" and ../@rel="su"]')
+	#	concepts.append(t.xpath('//node[@cat="mwu"]')[0])
 	else:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
 	concepts.append(t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)[0]);
@@ -514,7 +518,7 @@ def parseVerbs(xml, expectedAnswer):
 	#	part_prop = xml.xpath(query)[0].get("root")
 
 	#print_tree( xml.xpath('//node[@rel="hd" and @stype="whquestion" and ../@rel="body"]', smart_strings=False)[0])
-	prop = xml.xpath('//node[@rel="hd" and @pt="ww"]', smart_strings=False)#stype="whquestion"
+	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben")]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
 
 	for name in concepts:
