@@ -524,8 +524,9 @@ def parseVerbs(xml, expectedAnswer):
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
 		return None
-
-	property = getTreeWordList(prop[0],v.TYPE_LEMMA)
+	
+	if prop:
+		property = getTreeWordList(prop[0],v.TYPE_LEMMA)
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
