@@ -458,7 +458,6 @@ def parseWhereWhen(xml, expectedAnswer):
 	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
 		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False);
 	#elif xml.xpath('//node[@cat="mwu"]'):
-	#	print ("right one")
 	#	prop = t.xpath('//node[@rel="hd" and ../@rel="su"]')
 	#	concepts.append(t.xpath('//node[@cat="mwu"]')[0])
 	else:
