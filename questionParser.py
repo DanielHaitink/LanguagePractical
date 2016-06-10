@@ -1,5 +1,6 @@
 import sys, re, difflib
 import variables as v
+import io
 from SPARQLWrapper import SPARQLWrapper, JSON
 from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage
 
@@ -92,8 +93,11 @@ def getDomainURI(concept):
 	max = 0
 	URI = None
 	words = None
-	for line in open(v.FILE_PAIRCOUNT, 'r'):
+	#io.open also works on windows with unix utf-8 files
+	for line in io.open(v.FILE_PAIRCOUNT, 'r', encoding='utf-8'):
+	#for line in open(v.FILE_PAIRCOUNT, 'r'):
 		if re.search("^"+concept, line, re.IGNORECASE): #search concept in pairCounts
+			#v.printDebug(line)
 			line = line.rstrip()
 			line = line.split("\t") #split lines by tabs to separate elements
 			if len(line) > 1 and int(line[2])>max: #if occurcences is higher than the maximum found until now:
@@ -468,16 +472,26 @@ def parseWhereWhen(xml, expectedAnswer):
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
 	t=t[0]
 	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
-		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False);
+		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" and not(@lemma="zijn")]', smart_strings=False);
 	#elif xml.xpath('//node[@cat="mwu"]'):
 	#	prop = t.xpath('//node[@rel="hd" and ../@rel="su"]')
 	#	concepts.append(t.xpath('//node[@cat="mwu"]')[0])
 	else:
-		prop =  t.xpath('//node[@rel="hd" and ../@rel="body"]', smart_strings=False);
-	concepts.append(t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)[0]);
+		prop =  t.xpath('//node[@rel="hd" and ../@rel="body" and not(@lemma="zijn")]', smart_strings=False);
+	if t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False):
+		concepts.append(t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)[0]);
 	c = t.xpath('//node[@rel="obj1" and ../../@rel="su" and ../../../@rel="body"]', smart_strings=False)
 	if c:
 		concepts.append(c[0]);
+
+	#filter questions with only zijn als ww and not a past particle
+	if not prop:
+		prop =  t.xpath('//node[@rel="hd" and ../@rel="su" and ../../@rel="body" and not(@lemma="zijn")]', smart_strings=False);
+	
+		if t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False):
+			concepts = []
+			concepts.append(t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False)[0]);
+
 
 	for name in concepts:
 		concept.append(getTreeWordList(name,v.TYPE_WORD))
