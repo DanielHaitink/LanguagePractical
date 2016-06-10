@@ -425,16 +425,28 @@ def parseXofY(xml, expectedAnswer):
 
     #find concept
 	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod" and (../../@rel="su" or ../../@rel="predc" )]', smart_strings=False)
-    #concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
+	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
     #find property
 	#properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
-	properties = xml.xpath('//node[@pos="noun" and (../@rel="su" or ../@rel="predc")]', smart_strings=False)
+	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
+
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
+		#parser for welke question
+		v.printDebug("Trying to parse for welke question!")
+		concepts = xml.xpath('//node[@rel="su" and ../@rel="body"]')
+		for name in concepts:
+			concept = getTreeWordList(name,v.TYPE_WORD)
+	if concept==None or concept=="":
+		v.printDebug("No concept found!")
 		return None
 	for name in properties:
 		property = getTreeWordList(name,v.TYPE_LEMMA)
+	if property==None or property=="" or property == concept:
+		properties = xml.xpath('//node[@pos="noun" and (../@rel="su" or ../@rel="predc")]', smart_strings=False)
+		for name in properties:
+			property = getTreeWordList(name,v.TYPE_LEMMA)
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
@@ -524,7 +536,7 @@ def parseVerbs(xml, expectedAnswer):
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
 		return None
-	
+
 	if prop:
 		property = getTreeWordList(prop[0],v.TYPE_LEMMA)
 	if property==None or property=="":
