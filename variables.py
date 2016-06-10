@@ -82,4 +82,6 @@ QUESTIONS = [
 	"Door wie zijn de Olympische Spelen van 1936 geopend?",
 	"Hoeveel atleten namen deel aan de Olympische Zomerspelen van 2008?",
 	"Hoeveel landen namen deel aan de Olympische Zomerspelen van 2008?",
+	"Welke varianten heeft het meerkamp?",
+	"Door wie werden de Olympische Spelen van 2004 geopend?"
 	]
