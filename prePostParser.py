@@ -77,8 +77,6 @@ def preParseSentence(sentence):
 		#if "zijn".lower() in getTreeWordList(wws[0], v.TYPE_LEMMA).lower(): #maybe add need of only 1 ww
 		# my check from assignment 4:
 
-		print("sentence")
-		print(sentence)
 		if (len(sentence.split(" "))>0):
 			#lelijk
 			if(sentence.split(" ")[0]=="Welke"):
