@@ -49,7 +49,9 @@ checkFilesExist()
 
 # set counter for solutionID
 counter = 0
-printExampleQuestions()
+if v.__DEBUG__:
+	printExampleQuestions()
+
 for line in sys.stdin:
 	# Default vars
 	counter += 1
