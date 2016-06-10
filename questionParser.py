@@ -529,7 +529,10 @@ def parseVerbs(xml, expectedAnswer):
 	#	part_prop = xml.xpath(query)[0].get("root")
 
 	#print_tree( xml.xpath('//node[@rel="hd" and @stype="whquestion" and ../@rel="body"]', smart_strings=False)[0])
-	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben")]', smart_strings=False)#stype="whquestion"
+
+
+
+	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben") and not (@lemma="worden")]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
 
 	for name in concepts:

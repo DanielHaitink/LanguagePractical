@@ -88,7 +88,7 @@ def preParseSentence(sentence):
 		if(sentence.split(" ")[0]=="Door"):
 			expectedAnswer = v.ANSWER_PERSON
 			v.printDebug("Parsing as a door wie question")
-			#solution = parse(alpinoXML, expectedAnswer)
+			solution = parseVerbs(alpinoXML, expectedAnswer)
 			if not solution is None:
 				return solution
 
