@@ -84,7 +84,7 @@ def findBetween( input, first, last ):
 def search(query, file):
 	outList = []
 	for line in open(file, "r"):
-		if re.search("^"+query, line , re.IGNORECASE):
+		if re.search("(^|#)"+query+"#", line , re.IGNORECASE):
 			outList.append(line)
 	return outList
 
@@ -137,8 +137,14 @@ def getSimilarWords(string):
 		searchList = search(removeUnderscore(string), v.FILE_SYNONYMS)
 		if not searchList:
 			searchList = search(replaceUnderscore(string), v.FILE_SYNONYMS)
+
 	for item in searchList:
-		returnList += item.split("#")
+		#split line into words
+		for word in item.split("#"):
+			#check if word is not already in list and it is not an enter
+			if word not in returnList and word != "\n":
+				returnList.append(word)
+		#returnList += item.split("#")
 	if not returnList:
 		returnList.append(string)
 	return returnList
@@ -367,7 +373,7 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 	titles = None
 	dataTypes = None
 	URI = None
-	v.printDebug("found concept: "+str(concept)+"property: "+str(property))
+	v.printDebug("found concept: "+str(concept)+" property: "+str(property))
 	#find URI of concept
 	if type(concept) is not list:
 		concept = [concept]
@@ -395,7 +401,6 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 
 	#TODO bestMatches lijkt het niet goed te doen
 	bestMatches = matchSynonymProperty(synonyms, URIprops, threshold)
-
 
 	#go through properties until expected answer is found
 	#TODO: only terminate if answer matches expected answer!
@@ -429,6 +434,7 @@ def parseXofY(xml, expectedAnswer):
 
     #find concept
 	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod" and (../../@rel="su" or ../../@rel="predc" )]', smart_strings=False)
+	#if not concept:
 	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
     #find property
 	#properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
@@ -454,7 +460,6 @@ def parseXofY(xml, expectedAnswer):
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
-
 	return parseConceptProperty(concept, property, expectedAnswer)
 
 
