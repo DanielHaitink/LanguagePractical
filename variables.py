@@ -25,7 +25,7 @@ ANSWER_UNKNOWN = None
 
 #WHD words for expected answer
 WHD_LOCATION = ["waar"]
-WHD_PERSON = ["wie"]
+WHD_PERSON = ["wie", "door wie"]
 WHD_DATE = ["wanneer"]
 WHD_NUMBER = ["hoeveel", "hoe"]
 WHD_OBJECT = ["welke"]
