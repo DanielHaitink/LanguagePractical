@@ -2,6 +2,7 @@
 #environment set so that can use ./main.py
 import sys, os.path
 import variables as v
+import traceback
 from prePostParser import preParseSentence
 
 
@@ -79,8 +80,16 @@ for line in sys.stdin:
 		continue
 
 	# Go to preParse and wait for return
-	solutionList = preParseSentence(sentence)
+	try:
+		solutionList = preParseSentence(sentence)
 
-	# Print the answer
-	print(formatAnswer(solutionID, solutionList))
+		# Print the answer
+		print(formatAnswer(solutionID, solutionList))
+	except Exception as e:
+		print(solutionID, None)
+		exc_type, exc_value, exc_tb = sys.exc_info()
+		traceback.print_exception(exc_type, exc_value, exc_tb)
+
+	#except:
+	#	print("Unexpected error:", sys.exc_info())
 v.printDebug("Terminating Program!")
