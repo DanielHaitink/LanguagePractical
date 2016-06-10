@@ -1,0 +1,40 @@
+Example questions: type a number to query this question
+1. Hoe lang is Usain Bolt?
+2. Waar is Usain Bolt geboren?
+3. Wie organiseert de Olympische Spelen?
+4. Waar werden de Olympische Winterspelen 2006 gehouden?
+5. Door wie wordt Usain Bolt gecoacht?
+6. Wie traint Usain Bolt?
+7. Wie ontwierp het Beijing National Aquatics Center?
+8. Wie opende de Olympische Zomerspelen 2012?
+9. Hoe zwaar is Ranomi Kromowidjojo?
+10. Hoeveel deelnemers hadden de Olympische Zomerspelen van 2012?
+11. Wie heeft de Olympische Zomerspelen van 1936 geopend?
+12. Wanneer opende Adolf Hitler de Olympishe Spelen?
+13. Door wie zijn de Olympische Spelen van 1936 geopend?
+14. Hoeveel atleten namen deel aan de Olympische Zomerspelen van 2008?
+15. Hoeveel landen namen deel aan de Olympische Zomerspelen van 2008?
+16. Welke varianten heeft het meerkamp?
+17. Door wie werden de Olympische Spelen van 2004 geopend?
+1	Vladimir Poetin	
+2	Adolf Hitler	
+3	
+4	President Bill Clinton	
+5	Elizabeth II van het Verenigd Koninkrijk	
+6	
+7	
+8	11028	
+9	1986-04-23	
+10	Oudeschoot	
+11	Yuri van Gelder	
+12	
+13	1924-01-25	
+14	
+15	
+16	
+17	
+18	
+19	
+20	
+21	
+22	
