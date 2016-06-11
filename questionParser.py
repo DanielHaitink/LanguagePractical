@@ -399,7 +399,7 @@ def parseTimeDifference(URI, beginDate, beginPrefix="prop-nl:", endDate = 'now',
 		years =  end.year - begin.year
 		if(end.month < begin.month):
 			years -= 1
-		elif(end.month == begin.month and end.month < begin.month):
+		elif(end.month == begin.month and end.day < begin.day):
 			years -= 1
 	print("delta: ", years)
 
