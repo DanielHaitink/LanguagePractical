@@ -438,7 +438,7 @@ def parseXofY(xml, expectedAnswer):
 	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
     #find property
 	#properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
-	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
+	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd" and not(@word="Aan")]')
 
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
@@ -455,6 +455,10 @@ def parseXofY(xml, expectedAnswer):
 		property = getTreeWordList(name,v.TYPE_LEMMA)
 	if property==None or property=="" or property == concept:
 		properties = xml.xpath('//node[@pos="noun" and (../@rel="su" or ../@rel="predc")]', smart_strings=False)
+		for name in properties:
+			property = getTreeWordList(name,v.TYPE_LEMMA)
+	if property==None or property=="":
+		properties = xml.xpath('//node[@rel="hd" and @pos="noun"]', smart_strings=False)
 		for name in properties:
 			property = getTreeWordList(name,v.TYPE_LEMMA)
 	if property==None or property=="":
@@ -492,7 +496,7 @@ def parseWhereWhen(xml, expectedAnswer):
 	#filter questions with only zijn als ww and not a past particle
 	if not prop:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="su" and ../../@rel="body" and not(@lemma="zijn")]', smart_strings=False);
-	
+
 		if t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False):
 			concepts = []
 			concepts.append(t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False)[0]);
