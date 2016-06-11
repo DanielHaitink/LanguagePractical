@@ -40,9 +40,9 @@ def showHelp():
 
 def printExampleQuestions():
 	n=1
-	print ("Example questions: type a number to query this question")
+	v.printDebug("Example questions: type a number to query this question")
 	for q in v.QUESTIONS:
-		print (str(n) + ". " + q)
+		v.printDebug(str(n) + ". " + q)
 		n+=1
 
 checkFilesExist()
