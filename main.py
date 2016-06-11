@@ -30,6 +30,8 @@ def checkFilesExist():
 		errorFileNotFound(v.FILE_SYNONYMS)
 	if not os.path.isfile("./" + v.FILE_PAIRCOUNT):
 		errorFileNotFound(v.FILE_PAIRCOUNT)
+	if not os.path.isfile("./" + v.FILE_OSSPORTS):
+		errorFileNotFound(v.FILE_OSSPORTS)
 	return
 
 #Shows help
