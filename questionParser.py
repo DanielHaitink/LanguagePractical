@@ -109,20 +109,19 @@ def getDomainURI(concept):
 
 
 def patheticConceptFinder(sentence):
-    print (sentence[int(len(sentence)/2):])
-    URI = None
-    similarityMax = 0
-    for line in io.open(v.FILE_PAIRCOUNT, 'r', encoding='utf-8'):
-        line = line.rstrip()
-        line = line.split("\t")
-        if len(line)>2:
-            if line[0].lower() in sentence.lower():
-                similarity = difflib.SequenceMatcher(a=line[1], b=sentence).ratio()
-                if similarity > similarityMax:
-                    similarityMax = similarity
-                    URI = line[1]
-                    print (URI)
-    return URI
+	v.printDebug("No concept found, desperately trying to find one using difflib")
+	URI = None
+	similarityMax = 0
+	for line in io.open(v.FILE_PAIRCOUNT, 'r', encoding='utf-8'):
+		line = line.rstrip()
+		line = line.split("\t")
+		if len(line)>2:
+			if line[0].lower() in sentence.lower():
+				similarity = difflib.SequenceMatcher(a=line[1], b=sentence).ratio()
+				if similarity > similarityMax:
+					similarityMax = similarity
+					URI = line[1]
+	return URI
 
 #Removes everything from string except numbers and letters
 def makeAZ(string):
@@ -439,9 +438,12 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 		concept = [concept]
 
 	for c in concept:
-		URI = getResource(c)
-		if URI != None:
-			break
+		if "nl.dbpedia" not in c:
+			URI = getResource(c)
+			if URI != None:
+				break
+		else:
+			URI = c
 
 
 	####### used to get all properties out of sample questions, not needed later on..
@@ -488,7 +490,7 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 
 
 # Parse question of type "Wie/wat is X van Y"
-def parseXofY(xml, expectedAnswer):
+def parseXofY(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -513,6 +515,8 @@ def parseXofY(xml, expectedAnswer):
 		for name in concepts:
 			concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
+		concept = patheticConceptFinder(sentence)
+	if concept==None or concept=="":
 		v.printDebug("No concept found!")
 		return None
 	for name in properties:
@@ -531,7 +535,7 @@ def parseXofY(xml, expectedAnswer):
 	return parseConceptProperty(concept, property, expectedAnswer)
 
 
-def parseWhereWhen(xml, expectedAnswer):
+def parseWhereWhen(xml, expectedAnswer, sentence):
 	#maybe idea to split the parse into more functions, lot of duplicate code this way.
 	#Waar is Sven Kramer geboren werkt /wanneer geboren niet. Pakt nog steeds geboorteplaats als property
 	answers = None
@@ -568,7 +572,10 @@ def parseWhereWhen(xml, expectedAnswer):
 
 	for name in concepts:
 		concept.append(getTreeWordList(name,v.TYPE_WORD))
-	if concept==None or concept=="" or (not concept):
+	if concept==None or concept=="":
+		concept = patheticConceptFinder(sentence)
+	if concept==None or concept=="":
+		v.printDebug("No concept found!")
 		return None
 
 	for name in prop:
@@ -579,7 +586,7 @@ def parseWhereWhen(xml, expectedAnswer):
 
 	return parseConceptProperty(concept,property, expectedAnswer)
 
-def parseHow(xml, expectedAnswer):
+def parseHow(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -593,6 +600,9 @@ def parseHow(xml, expectedAnswer):
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
+		concept = patheticConceptFinder(sentence)
+	if concept==None or concept=="":
+		v.printDebug("No concept found!")
 		return None
 
 	property = getTreeWordList(prop[0],v.TYPE_WORD)
@@ -601,7 +611,7 @@ def parseHow(xml, expectedAnswer):
 		return None
 	return parseConceptProperty(concept,property, expectedAnswer)
 
-def parseVerbs(xml, expectedAnswer):
+def parseVerbs(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -625,6 +635,9 @@ def parseVerbs(xml, expectedAnswer):
 	for name in concepts:
 		concept = getTreeWordList(name,v.TYPE_WORD)
 	if concept==None or concept=="":
+		concept = patheticConceptFinder(sentence)
+	if concept==None or concept=="":
+		v.printDebug("No concept found!")
 		return None
 
 	if prop:
@@ -636,7 +649,7 @@ def parseVerbs(xml, expectedAnswer):
 
 
 # Parse question which wants a number
-def parseNumberOf(xml, expectedAnswer):
+def parseNumberOf(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -674,7 +687,10 @@ def parseNumberOf(xml, expectedAnswer):
 			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
 
 	v.printDebug("concept" + concept)
-	if concept==None or concept=="" or concept == " ":
+	if concept==None or concept=="":
+		concept = patheticConceptFinder(sentence)
+	if concept==None or concept=="":
+		v.printDebug("No concept found!")
 		return None
 	concept = concept.strip()
 	for name in properties:

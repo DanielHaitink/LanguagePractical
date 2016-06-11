@@ -65,7 +65,7 @@ def preParseSentence(sentence):
 
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
-		solution = parseNumberOf(alpinoXML, v.ANSWER_NUMBER)
+		solution = parseNumberOf(alpinoXML, v.ANSWER_NUMBER, sentence)
 		if not solution is None:
 			return solution
 
@@ -81,33 +81,33 @@ def preParseSentence(sentence):
 			#lelijk
 			if(words[0]=="Welke" or (words[0]=="Aan" and words[1]=="welke")):
 				v.printDebug("Parsing as a welke question")
-				solution = parseXofY(alpinoXML, expectedAnswer)
+				solution = parseXofY(alpinoXML, expectedAnswer, sentence)
 				if not solution is None:
 					return solution
 
 			#lelijk
 			if(words[0]=="Door"):
 				v.printDebug("Parsing as a door wie question")
-				solution = parseVerbs(alpinoXML, expectedAnswer)
+				solution = parseVerbs(alpinoXML, expectedAnswer, sentence)
 				if not solution is None:
 					return solution
 
 		if(alpinoXML.xpath('//node[@stype="whquestion" and @root="ben" and @sc="copula" and ../../node[@pt="vnw"]]')):
 			v.printDebug("Parsing as a X of Y question")
-			solution = parseXofY(alpinoXML, expectedAnswer)
+			solution = parseXofY(alpinoXML, expectedAnswer, sentence)
 			if not solution is None:
 				return solution
 
 		if(alpinoXML.xpath('//node[@rel="whd" and @cat="ap"]')):
 			v.printDebug("Parsing as a how question")
-			solution = parseHow(alpinoXML, expectedAnswer)
+			solution = parseHow(alpinoXML, expectedAnswer, sentence)
 			if not solution is None:
 				return solution
 
 		# wanneer / waar vragen check
 		if(alpinoXML.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')):
 			v.printDebug("Parsing as a where/when question")
-			solution = parseWhereWhen(alpinoXML, expectedAnswer)
+			solution = parseWhereWhen(alpinoXML, expectedAnswer, sentence)
 			if not solution is None:
 				return solution
 
@@ -122,7 +122,7 @@ def preParseSentence(sentence):
 
 		if(alpinoXML.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]') and not sentence.split(" ")[0]=="Hoeveel"):
 			v.printDebug("Parsing as a verbs question")
-			solution = parseVerbs(alpinoXML, expectedAnswer)
+			solution = parseVerbs(alpinoXML, expectedAnswer, sentence)
 			if not solution is None:
 				return solution
 
