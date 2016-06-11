@@ -65,6 +65,7 @@ def preParseSentence(sentence):
 
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
+		v.printDebug("parse as number of question")
 		solution = parseNumberOf(alpinoXML, v.ANSWER_NUMBER, sentence)
 		if not solution is None:
 			return solution
