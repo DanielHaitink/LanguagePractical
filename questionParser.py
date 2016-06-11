@@ -1,6 +1,8 @@
 import sys, re, difflib
 import variables as v
 import io
+from datetime import date
+#from dateutil.relativedelta import relativedelta
 from SPARQLWrapper import SPARQLWrapper, JSON
 from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage
 
@@ -367,6 +369,43 @@ def getResource(concept):
 
 	return URI
 
+def parseTimeDifference(URI, beginDate, endDate = 'now', showIn='years'):
+	#only now works for years
+	#other stuff can be added if one feels the need to do so
+	v.printDebug("use parseTimeDifference")
+	answers,titles = queryXofY(beginDate, URI, False)
+	if not answers:
+		answers = titles
+	if answers:
+		d = answers[0].split('-')
+		print(date)
+		begin = date(int(d[0]), int(d[1]), int(d[2]))
+	else:
+		return None
+
+	if(endDate == "now"):
+		end = date.today()
+		v.printDebug("got enddate as today")
+	else:
+		answers,titles = queryXofY(endDate, URI, False)
+		if not answers:
+			answers = titles
+		if answers:
+			d = answers[0].split('-')
+			end = date(int(d[0]), int(d[1]), int(d[2]))
+		else:
+			return None
+	if(showIn=="years"):
+		years =  end.year - begin.year
+		if(end.month < begin.month):
+			years -= 1
+		elif(end.month == begin.month and end.month < begin.month):
+			years -= 1
+	print("delta: ", years)
+
+	return [(str(years)+ " jaar")]
+
+
 def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILARITY_THRESHOLD):
 	answers = None
 	firstAnswer = None
@@ -390,6 +429,8 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 		#print("returning now")
 		return None
 
+	if(property == "oud" or property == "leeftijd"):
+		return parseTimeDifference(URI,"geboortedatum")
 
 	#find properties of the concept
 	URIprops = findProperties(URI)
