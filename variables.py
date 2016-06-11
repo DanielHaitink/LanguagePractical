@@ -84,5 +84,6 @@ QUESTIONS = [
 	"Hoeveel atleten namen deel aan de Olympische Zomerspelen van 2008?",
 	"Hoeveel landen namen deel aan de Olympische Zomerspelen van 2008?",
 	"Welke varianten heeft het meerkamp?",
-	"Door wie werden de Olympische Spelen van 2004 geopend?"
+	"Door wie werden de Olympische Spelen van 2004 geopend?",
+	"Hoeveel bronzen medailles heeft Nederland op de Olympische Zomerspelen 2008?"
 	]

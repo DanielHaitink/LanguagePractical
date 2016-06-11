@@ -426,7 +426,7 @@ def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', 
 	return [(str(years)+ " jaar")]
 
 
-def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILARITY_THRESHOLD):
+def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold = v.SIMILARITY_THRESHOLD):
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -442,6 +442,8 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 			URI = getResource(c)
 			if URI != None:
 				break
+			else:
+				URI = patheticConceptFinder(sentence)
 		else:
 			URI = c
 
@@ -532,7 +534,7 @@ def parseXofY(xml, expectedAnswer, sentence):
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
-	return parseConceptProperty(concept, property, expectedAnswer)
+	return parseConceptProperty(concept, property, expectedAnswer, sentence)
 
 
 def parseWhereWhen(xml, expectedAnswer, sentence):
@@ -584,7 +586,7 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 		v.printDebug("NO PROPERTY FOUND")
 		return None
 
-	return parseConceptProperty(concept,property, expectedAnswer)
+	return parseConceptProperty(concept,property, expectedAnswer, sentence)
 
 def parseHow(xml, expectedAnswer, sentence):
 	answers = None
@@ -609,7 +611,7 @@ def parseHow(xml, expectedAnswer, sentence):
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
-	return parseConceptProperty(concept,property, expectedAnswer)
+	return parseConceptProperty(concept,property, expectedAnswer, sentence)
 
 def parseVerbs(xml, expectedAnswer, sentence):
 	answers = None
@@ -645,7 +647,7 @@ def parseVerbs(xml, expectedAnswer, sentence):
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
-	return parseConceptProperty(concept,property, expectedAnswer)
+	return parseConceptProperty(concept,property, expectedAnswer, sentence)
 
 
 # Parse question which wants a number
@@ -654,12 +656,13 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 	firstAnswer = None
 	titles = None
 	dataTypes = None
-	property = None
+	property = ""
 	concept = ""
 
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
-	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd"]')
+	properties = xml.xpath('//node[(@rel="mod" and ../@rel="whd") or (@rel="hd" and ../@rel="whd")]')
+
 	'''
 	#concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body") or @rel="su"]')
 	concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body")]')
@@ -694,15 +697,16 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 		return None
 	concept = concept.strip()
 	for name in properties:
-		property = getTreeWordList(name,v.TYPE_WORD)
+		property = property + getTreeWordList(name,v.TYPE_WORD) + " "
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
 
+	property = property.strip()
 	v.printDebug(property)
 	v.printDebug(concept)
 
-	answer = parseConceptProperty(concept,property, expectedAnswer, 0.8)
+	answer = parseConceptProperty(concept,property, expectedAnswer, sentence)
 
 	if answer != None and len(answer)>1:
 		return [len(answer)]
