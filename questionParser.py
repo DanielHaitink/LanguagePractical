@@ -369,11 +369,11 @@ def getResource(concept):
 
 	return URI
 
-def parseTimeDifference(URI, beginDate, endDate = 'now', showIn='years'):
+def parseTimeDifference(URI, beginDate, beginPrefix="prop-nl:", endDate = 'now', endPrefix="prop-nl:", showIn='years'):
 	#only now works for years
 	#other stuff can be added if one feels the need to do so
 	v.printDebug("use parseTimeDifference")
-	answers,titles = queryXofY(beginDate, URI, False)
+	answers,titles = queryXofY(beginDate, URI, False, prefix=beginPrefix)
 	if not answers:
 		answers = titles
 	if answers:
@@ -387,7 +387,7 @@ def parseTimeDifference(URI, beginDate, endDate = 'now', showIn='years'):
 		end = date.today()
 		v.printDebug("got enddate as today")
 	else:
-		answers,titles = queryXofY(endDate, URI, False)
+		answers,titles = queryXofY(endDate, URI, False, prefix=endPrefix)
 		if not answers:
 			answers = titles
 		if answers:
@@ -430,7 +430,7 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 		return None
 
 	if(property == "oud" or property == "leeftijd"):
-		return parseTimeDifference(URI,"geboortedatum")
+		return parseTimeDifference(URI,"birthDate", beginPrefix="dbpedia-owl:")
 
 	#find properties of the concept
 	URIprops = findProperties(URI)

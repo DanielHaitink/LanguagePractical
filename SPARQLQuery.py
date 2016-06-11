@@ -29,7 +29,7 @@ def sendQuery(query, getDataType): #returns list of answers for a SPARQL query
 #TODO: create templates for SPARQL query for each question type
 
 
-def queryXofY(property, URI, getDataType):
+def queryXofY(property, URI, getDataType, prefix='prop-nl:'):
     dataTypes = None
     titles = []
     answers = []
@@ -38,17 +38,17 @@ def queryXofY(property, URI, getDataType):
     SELECT ?answer
 
     WHERE{
-    <%s> prop-nl:%s ?answer
+    <%s> %s%s ?answer
     }
-    """ % (URI,property)
+    """ % (URI,prefix, property)
 
     q2 = """
     SELECT ?answer
 
     WHERE{
-    ?answer prop-nl:%s <%s>
+    ?answer %s%s <%s>
     }
-    """ % (property,URI)
+    """ % (prefix, property,URI)
     v.printDebug(query)
 
     if getDataType:
