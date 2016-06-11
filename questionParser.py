@@ -107,6 +107,23 @@ def getDomainURI(concept):
 				URI = line[1] #store URI
 	return URI
 
+
+def patheticConceptFinder(sentence):
+    print (sentence[int(len(sentence)/2):])
+    URI = None
+    similarityMax = 0
+    for line in io.open(v.FILE_PAIRCOUNT, 'r', encoding='utf-8'):
+        line = line.rstrip()
+        line = line.split("\t")
+        if len(line)>2:
+            if line[0].lower() in sentence.lower():
+                similarity = difflib.SequenceMatcher(a=line[1], b=sentence).ratio()
+                if similarity > similarityMax:
+                    similarityMax = similarity
+                    URI = line[1]
+                    print (URI)
+    return URI
+
 #Removes everything from string except numbers and letters
 def makeAZ(string):
 	return re.sub(r'[\W_]+', '', string)
