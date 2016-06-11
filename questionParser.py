@@ -4,7 +4,7 @@ import io
 from datetime import date
 #from dateutil.relativedelta import relativedelta
 from SPARQLWrapper import SPARQLWrapper, JSON
-from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage
+from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage, basicQuery
 
 # Find all properties that the given URI has
 def findProperties(URI, both=True):
@@ -369,7 +369,13 @@ def getResource(concept):
 
 	return URI
 
-def parseTimeDifference(URI, beginDate, beginPrefix="prop-nl:", endDate = 'now', endPrefix="prop-nl:", showIn='years'):
+def isDead(URI):
+	deathDate = basicQuery(URI, "dbpedia-owl:deathDate")
+	if deathDate != None and deathDate != []:
+		 return True
+	return False
+
+def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', endPrefix="prop-nl:", showIn='years'):
 	#only now works for years
 	#other stuff can be added if one feels the need to do so
 	v.printDebug("use parseTimeDifference")
@@ -428,6 +434,8 @@ def parseConceptProperty(concept,property, expectedAnswer, threshold = v.SIMILAR
 		return None
 
 	if(property == "oud" or property == "leeftijd"):
+		if isDead(URI):
+			return ["Overleden"]
 		return parseTimeDifference(URI,"birthDate", beginPrefix="dbpedia-owl:")
 
 	#find properties of the concept
