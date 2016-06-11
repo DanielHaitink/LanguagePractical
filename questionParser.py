@@ -629,7 +629,7 @@ def parseVerbs(xml, expectedAnswer, sentence):
 
 
 
-	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben") and not (@lemma="worden")]', smart_strings=False)#stype="whquestion"
+	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben" or @lemma="worden" or @lemma="zijn")]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
 
 	for name in concepts:
