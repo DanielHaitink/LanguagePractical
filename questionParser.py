@@ -684,12 +684,12 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 	if concept==None or concept=="" or concept == " ":
 		concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
 		for name in concepts:
-			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
+			concept = concept + " " +getTreeWordList(name,v.TYPE_WORD) + " "
 		concept = concept.strip()
 	if concept==None or concept=="" or concept == " ":
 		concepts = xml.xpath('//node[@rel="obj1" and (../@rel="body" or ../../@rel="body")]')
 		for name in concepts:
-			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
+			concept = concept + " " +getTreeWordList(name,v.TYPE_WORD) + " "
 		concept = concept.strip()
 
 	v.printDebug("concept" + concept)
