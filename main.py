@@ -4,6 +4,7 @@ import sys, os.path
 import variables as v
 import traceback
 from prePostParser import preParseSentence
+from questionParser import isURI
 
 
 # Format the answer the correct way
@@ -17,6 +18,9 @@ def formatAnswer(solutionID, solutionList):
 
 	# Create string
 	for item in solutionList:
+		if isURI(item):
+			item = item.replace("http://nl.dbpedia.org/resource/", "")
+			item = item.replace("_", " ")
 		solutionString += str(item) + "\t"
 	return solutionString
 
