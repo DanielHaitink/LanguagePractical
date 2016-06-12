@@ -97,11 +97,61 @@ def search(query, file):
 			outList.append(line)
 	return outList
 
+def getKeyOS(item):
+    return item[1]
+
+def checkWhichOS(concept):
+	result =[]
+	r = []
+	w = ['eerste','vorige','laatste','volgende','aankomende']
+	words = concept.lower().split(' ')
+	for word in w:
+
+		if word in words:
+			if word in ['laatste','vorige']:
+				word = 'vorige'
+			if word in ['volgende', 'aankomende']:
+				word = 'volgende'
+			reg = re.search("Olympische (.)*spelen", concept, re.IGNORECASE)
+			URI = getDomainURI(reg.group())
+
+			URI =basicQuery(URI,"prop-nl:"+word)
+			for u in URI:
+				if isURI(u):
+					result.append(u)
+
+			if len(result)>1 and (word == 'volgende' or word == 'vorige'):
+				desc = False
+				for item in result:
+					jaar = basicQuery(item,"prop-nl:jaar")
+					if type(jaar) is list and jaar:
+						jaar = jaar[0]
+					r.append([item, int(jaar)])
+				if(word == 'vorige'):
+					desc = True
+
+				r = sorted(r, key=getKeyOS,  reverse=desc)
+				return r[0][0]
+
+			elif result:
+				return result[0]
+			
+	return False
+			
+
+
+
 #gives the URI of a given domain
 def getDomainURI(concept):
 	max = 0
 	URI = None
 	words = None
+
+	#check if eerste/volgende/vorige spelen
+	checkWhich = checkWhichOS(concept)
+	if checkWhich:
+		return checkWhich
+
 	#io.open also works on windows with unix utf-8 files
 	for line in io.open(v.FILE_PAIRCOUNT, 'r', encoding='utf-8'):
 	#for line in open(v.FILE_PAIRCOUNT, 'r'):
