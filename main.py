@@ -90,7 +90,7 @@ for line in sys.stdin:
 		# Print the answer
 		print(formatAnswer(solutionID, solutionList))
 	except Exception as e:
-		print(solutionID, None)
+		print(solutionID)
 		exc_type, exc_value, exc_tb = sys.exc_info()
 		traceback.print_exception(exc_type, exc_value, exc_tb)
 

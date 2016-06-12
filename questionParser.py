@@ -665,6 +665,7 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 	dataTypes = None
 	property = ""
 	concept = ""
+	c = ""
 
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
@@ -708,7 +709,7 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 
 	if concept==None or concept=="" or concept == " ":
 		concept = c
-	else:
+	elif c and not c=="":
 		concept = [c, concept]
 
 	v.printDebug("concept" + str(concept))
