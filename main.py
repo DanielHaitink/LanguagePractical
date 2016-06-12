@@ -68,13 +68,19 @@ for line in sys.stdin:
 		continue
 
 	if line.rstrip().isdigit():
+		if int(line.rstrip()) > len(v.QUESTIONS):
+			v.printDebug("Number too big!")
+			continue
 		line = str(line.rstrip()) + "\t" + str(v.QUESTIONS[int(line)-1])
 
 	# See if a TAB is occuring, if so use the number before the TAB, else use counter
 	if "\t" in line:
 		lineList = line.split("\t")
-		solutionID = int(lineList[0])
-		sentence = lineList[1].rstrip()
+		if len(lineList) == 2:
+			solutionID = int(lineList[0])
+			sentence = lineList[1].rstrip()
+		else:
+			v.printDebug("More than 2 tabs in sentence!")
 	else:
 		sentence = line.rstrip()
 
