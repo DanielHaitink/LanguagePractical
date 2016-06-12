@@ -454,8 +454,6 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		else:
 			URI = c
 
-	print("URLLLL "+URI)
-
 
 	####### used to get all properties out of sample questions, not needed later on..
 	v.prop = property
