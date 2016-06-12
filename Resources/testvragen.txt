@@ -18,6 +18,6 @@
 18	In welke jaartallen werden de Olympische spelen in Canada georganiseerd?
 19	Tijdens welke jaren werd er korfbal gespeeld bij de Olympische Spelen?
 20	Aan hoeveel sporten deed Zweden mee op de Olympische Zomerspelen van 1976?
-21	Hoeveel gouden medailles won zwemmer Michael Phelps op de	Olympische Zomerspelen 2008 in Peking?
+21	Hoeveel gouden medailles won zwemmer Michael Phelps op de Olympische Zomerspelen 2008 in Peking?
 22	Hoeveel medailles heeft China gewonnen op de Olympische Zomerspelen 2008?
 exit
