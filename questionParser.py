@@ -55,6 +55,39 @@ def findProperties(URI, both=True):
 
 	return list(set(properties))
 
+
+# Find all properties that the given URI has, but not properties that have a URI as answer
+def findProperties2(URI):
+	query = """
+	SELECT ?property, ?value
+
+	WHERE {<%s> ?property ?value
+	FILTER (!regex(?value, "nl.dbpedia"))
+	}
+	""" % (URI)
+
+	sparql = SPARQLWrapper("http://nl.dbpedia.org/sparql")
+	sparql.setQuery(query)
+	sparql.setReturnFormat(JSON)
+	results = sparql.query().convert()
+
+	raw_properties = []
+
+	for result in results["results"]["bindings"]:
+		for arg in result :
+			answer = result[arg]["value"]
+			raw_properties.append(answer)
+	properties = []
+	for element in raw_properties:
+		if "nl.dbpedia.org/property" in element:
+			element = element.split("/")
+			properties.append(element[-1])
+
+
+
+
+	return list(set(properties))
+
 #give alpino node and wordtype you want to extract see variables
 #exclude most contain a list of arrays, where an array is [attrib, value], there words will be filtered out of the result
 def getTreeWordList(xml, wordtype, exclude=[]):
@@ -546,6 +579,33 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 	if answers == None:
 		return titles
 	return titles
+
+def findInPage(answers, property, expectedAnswer, sentence):
+	v.printDebug("URI found instead of expected answer, looking for answer in the URI")
+	returnList = []
+	for URI in answers:
+		if "nl.dbpedia" in URI:
+			URIprops = findProperties2(URI)
+			synonyms = getSimilarWords(property)
+			bestMatches = matchSynonymProperty(synonyms, URIprops, 0.4)
+			for property in bestMatches:
+				v.printDebug (property)
+				answers,titles,dataTypes = queryXofY(property, URI, True)
+				if answers == None or answers == []:
+					continue
+				v.printDebug(answers)
+				v.printDebug(expectedAnswer)
+				if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
+					answers = None
+					continue
+				else:
+					break
+			# Return the first answer found, At least it gives an answer
+			returnList.append(answers)
+		else:
+			 returnList.append(None)
+	return returnList
+
 
 
 # Parse question of type "Wie/wat is X van Y"
