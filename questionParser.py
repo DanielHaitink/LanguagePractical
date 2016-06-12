@@ -56,13 +56,20 @@ def findProperties(URI, both=True):
 	return list(set(properties))
 
 #give alpino node and wordtype you want to extract see variables
-def getTreeWordList(xml, wordtype):
+#exclude most contain a list of arrays, where an array is [attrib, value], there words will be filtered out of the result
+def getTreeWordList(xml, wordtype, exclude=[]):
 	#appends the value of the word-attribute for all nodes that are dominated by the node 'xml'
 	#that is the argument of the function, and returns this a single string
 	leaves = xml.xpath('descendant-or-self::node[@word]')
 	words = []
 	for l in leaves :
-		words.append(l.attrib[wordtype])
+		add = True
+		for p in exclude:
+			if (l.attrib[p[0]] == p[1]):
+				add = False
+				break
+		if add:
+			words.append(l.attrib[wordtype])
 	return " ".join(words)
 
 #Removes articles from the input
@@ -447,6 +454,8 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		else:
 			URI = c
 
+	print("URLLLL "+URI)
+
 
 	####### used to get all properties out of sample questions, not needed later on..
 	v.prop = property
@@ -692,13 +701,25 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 			concept = concept + " " +getTreeWordList(name,v.TYPE_WORD) + " "
 		concept = concept.strip()
 
-	v.printDebug("concept" + concept)
+	concept = concept.strip()
+
+	concepts = xml.xpath('//node[@rel="body" and ../@cat="whq"]')
+
+	for name in concepts:
+		c =getTreeWordList(name,v.TYPE_WORD, exclude = [['pos','verb']])
+
+	if concept==None or concept=="" or concept == " ":
+		concept = c
+	else:
+		concept = [c, concept]
+
+	v.printDebug("concept" + str(concept))
 	if concept==None or concept=="":
 		concept = patheticConceptFinder(sentence)
 	if concept==None or concept=="":
 		v.printDebug("No concept found!")
 		return None
-	concept = concept.strip()
+
 	for name in properties:
 		property = property + getTreeWordList(name,v.TYPE_WORD) + " "
 	if property==None or property=="":
