@@ -521,13 +521,8 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		v.printDebug(answers)
 		v.printDebug(expectedAnswer)
 		if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
-			if "nl.dbpedia" in answers[0]:
-				#check this URI for answer
-				answers = findInPage(answers, property, expectedAnswer, sentence)
-				return answers
-			else:
-				answers = None
-				continue
+			answers = None
+			continue
 		else:
 			break
 	# Return the first answer found, At least it gives an answer
@@ -542,7 +537,7 @@ def findInPage(answers, property, expectedAnswer, sentence):
 		if "nl.dbpedia" in URI:
 			URIprops = findProperties2(URI)
 			synonyms = getSimilarWords(property)
-			bestMatches = matchSynonymProperty(synonyms, URIprops)
+			bestMatches = matchSynonymProperty(synonyms, URIprops, 0.4)
 			for property in bestMatches:
 				v.printDebug (property)
 				answers,titles,dataTypes = queryXofY(property, URI, True)
