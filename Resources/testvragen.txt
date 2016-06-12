@@ -20,4 +20,7 @@
 20	Aan hoeveel sporten deed Zweden mee op de Olympische Zomerspelen van 1976?
 21	Hoeveel gouden medailles won zwemmer Michael Phelps op de Olympische Zomerspelen 2008 in Peking?
 22	Hoeveel medailles heeft China gewonnen op de Olympische Zomerspelen 2008?
+23	Wanneer was de eerste Olympische Zomerspelen?
+24	Wanneer is de volgende Olympische Zomerspelen?
+25	Wanneer vinden de volgende Olympische Zomerspelen plaats?
 exit
