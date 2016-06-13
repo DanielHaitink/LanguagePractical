@@ -1,0 +1,18 @@
+1	1,96 m	
+2	Trelawny	Sherwood Content	
+3	Internationaal Olympisch Comité	
+4	Turijn, Italië	
+5	1986-08-21	
+6	12000.0	
+7	PTW Architects, CSCEC International Design en Arup	
+8	Elizabeth II van het Verenigd Koninkrijk	
+9	67.0	
+10	10500	
+11	Adolf Hitler	
+12	1945-04-30	
+13	Adolf Hitler	
+14	11028	
+15	204	
+16	Discuswerpen	Hardlopen	Hoogspringen	Kogelstoten	Polsstokhoogspringen	Speerwerpen	Verspringen	Hordenlopen	
+17	President Kostis Stephanopoulos	
+18	4	

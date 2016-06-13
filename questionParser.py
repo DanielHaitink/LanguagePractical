@@ -505,8 +505,11 @@ def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', 
 	if answers:
 		#convert the string to a date
 		d = answers[0].split('-')
-		print(date)
-		begin = date(int(d[0]), int(d[1]), int(d[2]))
+		v.printDebug(date)
+		if len(d) > 2:
+			begin = date(int(d[0]), int(d[1]), int(d[2]))
+		else:
+			return None
 	else:
 		return None
 
@@ -522,7 +525,10 @@ def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', 
 		if answers:
 			#convert endate to a date
 			d = answers[0].split('-')
-			end = date(int(d[0]), int(d[1]), int(d[2]))
+			if len(d) > 2:
+				end = date(int(d[0]), int(d[1]), int(d[2]))
+			else:
+				return None
 		else:
 			return None
 	#default, show result in years
@@ -662,9 +668,11 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 	property = None
 	concepts =[]
 
+
 	#some options to get concept and property
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
-	t=t[0]
+	if t:
+		t=t[0]
 	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
 		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" and not(@lemma="zijn")]', smart_strings=False);
 	else:
@@ -706,7 +714,9 @@ def parseHow(xml, expectedAnswer, sentence):
 	firstAnswer = None
 	titles = None
 	dataTypes = None
-	concept = None
+	concept = []
+	property = None
+	concepts =[]
 
 	#get property and concept
 	t = xml.xpath('//node[@rel="whd" and @cat="ap"]')[0]
@@ -733,8 +743,9 @@ def parseVerbs(xml, expectedAnswer, sentence):
 	firstAnswer = None
 	titles = None
 	dataTypes = None
+	concept = []
 	property = None
-	concept = None
+	concepts =[]
 
 	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben" or @lemma="worden" or @lemma="zijn")]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);

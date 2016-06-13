@@ -69,7 +69,7 @@ def queryXofY(property, URI, getDataType, prefix='prop-nl:'):
 	for answer in answers:
 		if "nl.dbpedia" in answer:
 			title = URITitle(answer)
-			if title != []:
+			if title != None and title != []:
 				titles.append(title[0])
 			else:
 				titles.append(answer)
