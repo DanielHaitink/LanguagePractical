@@ -1,4 +1,4 @@
-Aaberg
+DeAaberg
 Aaccf
 Aaker
 Aamodt
@@ -11923,7 +11923,6 @@ Daywalt
 Dazey
 Dazzo
 Ddene
-De
 De-Anna
 DeAnne
 DeWayne
@@ -18384,7 +18383,7 @@ Galbo
 Galbraith
 Galbreath
 Gale
-Gale 
+Gale
 Galea
 Galeano
 Galen
@@ -22432,7 +22431,6 @@ Hazle
 Hazlett
 Hazlewood
 Hazzard
-He
 Heaberlin
 Heacock
 Heacox
@@ -29259,7 +29257,6 @@ Kyzar
 Kyzer
 L;urette
 LLoyd
-La
 La verne
 Laabs
 Laack
@@ -30234,7 +30231,6 @@ Lazzara
 Lazzari
 Lazzarini
 Lazzaro
-Le
 LeRoy
 Lea
 Leabo
@@ -30801,7 +30797,6 @@ Leroy
 Lerro
 Lersch
 Lerum
-Les
 Lesage
 Lesane
 Lesch
@@ -38399,8 +38394,6 @@ Nixon
 Niz
 Niziolek
 Niznik
-Nj
-No
 Noa
 Noack
 Noah
@@ -52200,7 +52193,6 @@ Thaxter
 Thaxton
 Thayer
 Thayne
-The
 Thea
 Theadora
 Theall
