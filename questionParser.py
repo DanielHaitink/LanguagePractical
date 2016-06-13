@@ -2,7 +2,6 @@ import sys, re, difflib
 import variables as v
 import io
 from datetime import date
-#from dateutil.relativedelta import relativedelta
 from SPARQLWrapper import SPARQLWrapper, JSON
 from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage, basicQuery
 
@@ -97,6 +96,7 @@ def search(query, file):
 def getKeyOS(item):
     return item[1]
 
+# Check for unspecific Olympic Games URI's
 def checkWhichOS(concept):
 	v.printDebug("checking which os we need")
 	result =[]
@@ -226,9 +226,11 @@ def getAllSimilarProperties(prop, allProperties):
 	outList += sw
 	return outList
 
+# Replaces underscore with nothing
 def removeUnderscore(string):
 	return string.replace("_", "")
 
+# replaces undercore with a given char, default is space
 def replaceUnderscore(string, replace = " "):
 	return string.replace("_", " ")
 
@@ -280,6 +282,7 @@ def matchSynonymProperty(synonyms, properties, threshold = v.SIMILARITY_THRESHOL
 			bestMatches.append([currentMax, property])
 	return [t[1] for t in sorted(bestMatches, reverse=True)]
 
+# Check if the string given is a nl.dbpedia URI
 def isURI(string):
 	if string is not None and "http://nl.dbpedia.org/resource/" in string:
 		return True
@@ -291,8 +294,6 @@ def findType(types, wantedTypeName):
 	for currentType in types:
 		if wantedTypeName.lower() in currentType.lower():
 			return True
-		#if "http://dbpedia.org/ontology/" in currentType:
-		#	allTypes.append(currentType.split("http://dbpedia.org/ontology/",1)[1])
 	return False
 
 # Returns whether the URI contains one of the wanted types.
@@ -304,6 +305,7 @@ def typesInURI(URI, wantedTypeNames):
 			return True
 	return False
 
+# Check if the inputDataType is in the list checkDataType
 def isInDataType(inputDataType, checkDataType):
 	for item in checkDataType:
 		if inputDataType == item:
@@ -319,30 +321,40 @@ def getExpectedAnswerURI(answer):
 
 #check if the answer is a person
 def isExpectedAnswerPerson(answer,dataType):
+	# If datatype is DATE or INTEGER, return false
 	if dataType is not None and (isInDataType(dataType, v.DATATYPE_DATE) or isInDataType(dataType, v.DATATYPE_INTEGER)):
 		return False
 	v.printDebug("DATATYPE = "+ str(dataType))
 	URI = answer
 	title = answer
 
+	# Check for hard passes
 	for passWord in v.PASS_PERSON:
 		if passWord in answer:
 			return True
+
+	# Get URI if not given
 	if not isURI(answer):
 		URI = getExpectedAnswerURI(answer)
 	if isURI(answer):
+		# Get redirected URI if needed
 		URI = getRedirectedURI(URI)
+
+		# Check for types of the URI, if contains Person of Agent it is probably a person
 		if typesInURI(URI, ["Person", "Agent"]):
 			return True
 
+		#Get the title of the URI's
 		title = ""
 		tempTitle = URITitle(URI)
 		for item in tempTitle:
 			title += str(item)
 
+	# Check if we have gotten titles
 	if len(title) < 1:
 		return False
 
+	# Search names in name corpus, if found return true
 	names = title.split(" ")
 	for name in names:
 		if len(name) > 0 and name[0].isupper() and inNamesCorpus(name):
