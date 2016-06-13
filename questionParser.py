@@ -11,8 +11,9 @@ def findProperties(URI, both=True):
 	SELECT ?property, ?value
 	WHERE {<%s> ?property ?value
 	FILTER not exists {<%s> prop-nl:wikiPageUsesTemplate ?value}
+	FILTER not exists {<%s> prop-nl:afbeelding ?value}
 	}
-	""" % (URI, URI)
+	""" % (URI, URI, URI)
 
 	sparql = SPARQLWrapper("http://nl.dbpedia.org/sparql")
 	sparql.setQuery(query)
@@ -110,7 +111,7 @@ def checkWhichOS(concept):
 	for word in w:
 
 		if word in words:
-			#get right property for "each" possible word, hardcoded 
+			#get right property for "each" possible word, hardcoded
 			if word in ['laatste','vorige']:
 				prop =  "dbpedia-owl:previousEvent"
 			elif word in ['volgende', 'aankomende', 'eerstvolgende']:
@@ -144,7 +145,7 @@ def checkWhichOS(concept):
 				if isURI(u):
 					result.append(u)
 
-			#we only want one in case of volgende vorige, choose ascending/descending 
+			#we only want one in case of volgende vorige, choose ascending/descending
 			if len(result)>1 and (word == 'volgende' or word == 'vorige'):
 				desc = False
 				#get for each OS the year
@@ -547,9 +548,9 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 
 	#if property is Olympische spelen and expected answer is location or date, then we know we need the location / date of the Olympic games then
 	#not really happy with this solution but it seems to work
-	if((expectedAnswer== v.ANSWER_LOCATION or expectedAnswer== v.ANSWER_DATE ) 
-	and (property.strip().lower() == 'olympische zomerspelen' 
-		or property.strip().lower() == 'olympische winterspelen' 
+	if((expectedAnswer== v.ANSWER_LOCATION or expectedAnswer== v.ANSWER_DATE )
+	and (property.strip().lower() == 'olympische zomerspelen'
+		or property.strip().lower() == 'olympische winterspelen'
 		or property.strip().lower() == 'olympische spelen')
 		or property.strip().lower() == 'eerste'):
 				if expectedAnswer == v.ANSWER_LOCATION:
