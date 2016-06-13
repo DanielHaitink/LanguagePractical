@@ -72,6 +72,7 @@ def preParseSentence(sentence):
 	# Check if question is of format X of Y
 	wws = alpinoXML.xpath('//node[@pos="verb"]')
 
+	#check different possibilities and parse them accordingly
 	if not listNoneCheck(wws):
 		words = sentence.split(" ")
 		if (len(words)>1):

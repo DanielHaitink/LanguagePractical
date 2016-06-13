@@ -97,6 +97,7 @@ for line in sys.stdin:
 		continue
 
 	# Go to preParse and wait for return
+	# Try catch block to prevent program to terminate because we missed something in the rest. Will simply print the number and go to the next question
 	try:
 		solutionList = preParseSentence(sentence)
 

@@ -627,6 +627,7 @@ def parseXofY(xml, expectedAnswer, sentence):
 		concepts = xml.xpath('//node[@rel="su" and ../@rel="body"]')
 		for name in concepts:
 			concept = getTreeWordList(name,v.TYPE_WORD)
+	#backup option to find concept
 	if concept==None or concept=="":
 		concept = patheticConceptFinder(sentence)
 	if concept==None or concept=="":
@@ -634,10 +635,12 @@ def parseXofY(xml, expectedAnswer, sentence):
 		return None
 	for name in properties:
 		property = getTreeWordList(name,v.TYPE_LEMMA)
+	#if we don't find a property, try other option
 	if property==None or property=="" or property == concept:
 		properties = xml.xpath('//node[@pos="noun" and (../@rel="su" or ../@rel="predc")]', smart_strings=False)
 		for name in properties:
 			property = getTreeWordList(name,v.TYPE_LEMMA)
+	#if we don't find a property, try other option
 	if property==None or property=="":
 		properties = xml.xpath('//node[@rel="hd" and @pos="noun"]', smart_strings=False)
 		for name in properties:
@@ -645,6 +648,7 @@ def parseXofY(xml, expectedAnswer, sentence):
 	if property==None or property=="":
 		v.printDebug("NO PROPERTY FOUND")
 		return None
+
 	return parseConceptProperty(concept, property, expectedAnswer, sentence)
 
 # Parse questions of location and person
