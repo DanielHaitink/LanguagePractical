@@ -8,7 +8,6 @@ SIMILARITY_THRESHOLD = 0.4
 FILE_PAIRCOUNT = "Resources/pairCounts"
 FILE_SYNONYMS = "Resources/synonyms"
 FILE_NAMES = "Resources/names.txt"
-FILE_OSSPORTS = "Resources/OSSports"
 
 #Types of words alpino
 TYPE_SENSE = "sense"
