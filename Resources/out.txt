@@ -1,9 +1,9 @@
 1	Vladimir Poetin	
 2	Adolf Hitler	
-3	
+3	204	
 4	President Bill Clinton	
 5	Elizabeth II van het Verenigd Koninkrijk	
-6	
+6	204	
 7	4	
 8	11028	
 9	1986-04-23	
@@ -14,10 +14,10 @@
 14	2014-02-07	
 15	Rio de Janeiro, Brazilië	
 16	
-17	
-18	
+17	Zwemmen	
+18	Edmonton Drillers	FC Edmonton	Montreal Impact (2010)	Montreal Manic	Edmonton Brickmen	Victoria Riptides	Vancouver Whitecaps FC (2009)	Calgary Boomers	Toronto Blizzard (1971)	
 19	Olympische Winterspelen 2018	Olympische Zomerspelen 2016	
-20	
+20	Zweden	
 21	
 22	100	
 23	302	
