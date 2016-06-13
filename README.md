@@ -1,6 +1,6 @@
-#LanguagePractical
+#PAM - LanguagePractical
 
-A Dutch question parser, which can answer your Dutch questions using dbPedia and local resources.
+PAM is a Dutch question parser, which can answer your Dutch questions using dbPedia and local resources.
 Mainly focussed on questions about the Olympics.
 
 ##Prerequisites
