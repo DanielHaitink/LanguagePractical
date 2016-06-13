@@ -17,9 +17,9 @@
 17	Zwemmen	
 18	Edmonton Drillers	FC Edmonton	Montreal Impact (2010)	Montreal Manic	Edmonton Brickmen	Victoria Riptides	Vancouver Whitecaps FC (2009)	Calgary Boomers	Toronto Blizzard (1971)	
 19	Olympische Winterspelen 2018	Olympische Zomerspelen 2016	
-20	Zweden	
+20
 21	
 22	100	
-23	302	
-24	31	
+23	2012-07-27	
+24	2016-08-05	
 25	2016-08-05	

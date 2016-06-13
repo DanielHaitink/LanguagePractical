@@ -508,9 +508,17 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 	v.printDebug("found concept: "+str(concept)+" property: "+str(property))
 	v.printDebug("expected answer: "+ str(expectedAnswer))
 
-	#if property is Olympische spelen and expected answer is location, then we know we need the location of the Olympic games then
-	if(expectedAnswer== v.ANSWER_LOCATION and (property.strip().lower() == 'olympische zomerspelen' or property.strip().lower() == 'olympische winterspelen' or property.strip().lower() == 'olympische spelen')):
-		property = "locatie"
+	#if property is Olympische spelen and expected answer is location or date, then we know we need the location / date of the Olympic games then
+	#not really happy with this solution but it seems to work
+	if((expectedAnswer== v.ANSWER_LOCATION or expectedAnswer== v.ANSWER_DATE ) 
+	and (property.strip().lower() == 'olympische zomerspelen' 
+		or property.strip().lower() == 'olympische winterspelen' 
+		or property.strip().lower() == 'olympische spelen')
+		or property.strip().lower() == 'eerste'):
+				if expectedAnswer == v.ANSWER_LOCATION:
+					property = 'locatie'
+				if expectedAnswer == v.ANSWER_DATE:
+					property = 'opening'
 
 
 	#find URI of concept
