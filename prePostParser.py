@@ -129,5 +129,7 @@ def preParseSentence(sentence):
 
 		v.printDebug("Question does not match any pattern")
 
+		return(parseXofY(alpinoXML, expectedAnswer, sentence))
+
 		# TODO: ADD MORE PARSE TYPES
 	return None
