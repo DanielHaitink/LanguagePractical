@@ -69,7 +69,6 @@ def printError(debug, exception):
 		print(debug+ " " + exception, file=sys.stderr)
 
 
-
 #Example questions for easy testing
 QUESTIONS = [
     "Hoe lang is Usain Bolt?",
