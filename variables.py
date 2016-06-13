@@ -1,14 +1,15 @@
 import sys
 
+# Show debug messages
 __DEBUG__ = True
 
+# threshold for the matchSynonymProperty function
 SIMILARITY_THRESHOLD = 0.4
 
 #Files
 FILE_PAIRCOUNT = "Resources/pairCounts"
 FILE_SYNONYMS = "Resources/synonyms"
 FILE_NAMES = "Resources/names.txt"
-FILE_OSSPORTS = "Resources/OSSports"
 
 #Types of words alpino
 TYPE_SENSE = "sense"
@@ -31,12 +32,16 @@ WHD_DATE = ["wanneer"]
 WHD_NUMBER = ["hoeveel", "hoe"]
 WHD_OBJECT = ["welke"]
 
+# Passes for expected answers, if a pass is found it is assumed to be true
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
 
-SPECIFIC_OS_CHECk = ['eerste','vorige','laatste','volgende','aankomende', 'eerstvolgende']
+
+# Words to check different Olympic Games
+SPECIFIC_OS_CHECK = ['eerste','vorige','laatste','volgende','aankomende', 'eerstvolgende']
 
 
-#dataTypes
+
+# Datatypes used for expected answers
 DATATYPE_INTEGER = ["http://www.w3.org/2001/XMLSchema#integer",
 "http://www.w3.org/2001/XMLSchema#double",
 "http://www.w3.org/2001/XMLSchema#float",
@@ -53,15 +58,22 @@ DATATYPE_DATE = ["http://www.w3.org/2001/XMLSchema#date",
 "http://www.w3.org/2001/XMLSchema#dateTime"]
 DATATYPE_STRING = ["http://www.w3.org/2001/XMLSchema#string"]
 
-
+# Prints to stderr iff __DEBUG__ is True
 def printDebug(debug):
 	if __DEBUG__:
 		print(debug, file=sys.stderr)
 
+# Prints an exception to stderr iff __DEBUG__ is True
 def printError(debug, exception):
 	if __DEBUG__:
 		print(debug+ " " + exception, file=sys.stderr)
 
+<<<<<<< HEAD
+=======
+# Variable to obtain only properties
+GETONLYPROPERTIES = False
+
+>>>>>>> 7daef6e85ab9384381d616a31fa5ee27bf5cb90f
 #Example questions for easy testing
 QUESTIONS = [
     "Hoe lang is Usain Bolt?",
