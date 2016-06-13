@@ -1,7 +1,9 @@
 import socket, sys
 import variables as v
 from lxml import etree
-from questionParser import getTreeWordList, parseNumberOf, parseXofY, parseWhereWhen, parseHow, parseVerbs
+from questionParser import getTreeWordList, parseNumberOf, parseXofY, parseWhereWhen, parseHow, parseVerbs, findProperties, patheticConceptFinder
+from SPARQLQuery import queryXofY
+import difflib
 
 # return true is something from list is in sentence, else false
 def containsFromList(sentence, list):
@@ -116,6 +118,26 @@ def preParseSentence(sentence):
 		v.printDebug("Final Try in parseXofY")
 
 		# Final try to at least find something
-		return(parseXofY(alpinoXML, expectedAnswer, sentence))
+		solution = parseXofY(alpinoXML, expectedAnswer, sentence)
+		# If that doesn't work, try best matching property
+		if solution != None:
+			return solution
+		else:
+			concept = patheticConceptFinder(sentence)
+			props = findProperties(concept)
+			v.printDebug(props)
+			maxSim = 0
+			bestMatch = None
+			for prop in props:
+				similarity = difflib.SequenceMatcher(a=prop, b=sentence).ratio()
+				if similarity > maxSim:
+					maxSim = similarity
+					bestMatch = prop
+			v.printDebug(concept)
+			v.printDebug(property)
+			if bestMatch != None:
+				return queryXofY(bestMatch, concept, False)
+			else:
+				return None
 
 	return None
