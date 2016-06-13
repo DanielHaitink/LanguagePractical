@@ -33,7 +33,7 @@ WHD_OBJECT = ["welke"]
 
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
 
-SPECIFIC_OS_CHECK = ['eerste','vorige','laatste','volgende','aankomende', 'eerstvolgende']
+SPECIFIC_OS_CHECk = ['eerste','vorige','laatste','volgende','aankomende', 'eerstvolgende']
 
 
 #dataTypes
@@ -61,13 +61,6 @@ def printDebug(debug):
 def printError(debug, exception):
 	if __DEBUG__:
 		print(debug+ " " + exception, file=sys.stderr)
-
-#variables used to extract all given properties from sentences.. can be removed later on
-prop = ""
-sentence = ""
-nr = -1
-properties = []
-GETONLYPROPERTIES = False
 
 #Example questions for easy testing
 QUESTIONS = [
