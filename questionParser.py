@@ -93,6 +93,7 @@ def search(query, file):
 			outList.append(line)
 	return outList
 
+#helper function for the sorting in checkWhichOS
 def getKeyOS(item):
     return item[1]
 
@@ -114,10 +115,12 @@ def checkWhichOS(concept):
 				prop = "dbpedia-owl:nextEvent"
 			elif word in ['eerste']:
 				prop = "prop-nl:eerste"
+
+			#search if we need olymic games or olympic winter/summer games
 			reg = re.search("Olympische (.)*spelen", concept, re.IGNORECASE)
 
 
-			#safety check
+			#safety check, if not found return
 			if reg is None:
 				return False
 
@@ -128,17 +131,21 @@ def checkWhichOS(concept):
 				elif(reg.group().lower == "olympische winterspelen"):
 					return('http://nl.dbpedia.org/resource/Olympische_Winterspelen_1924')
 			v.printDebug("found pattern"+str(reg.group()))
+			#get the URI of the needed olympic game
 			#ugly fix with tab, to prevent Zomerspelen 2012 to be selected...
 			URI = getDomainURI(reg.group()+"\t")
 			v.printDebug("uri found: "+str(URI))
 			URI =basicQuery(URI, prop)
-			v.printDebug("osanswer: "+str(URI))
+			v.printDebug("os answer: "+str(URI))
+			#check if they are really URI and not something else
 			for u in URI:
 				if isURI(u):
 					result.append(u)
 
+			#we only want one in case of volgende vorige, choose ascending/descending 
 			if len(result)>1 and (word == 'volgende' or word == 'vorige'):
 				desc = False
+				#get for each OS the year
 				for item in result:
 					jaar = basicQuery(item,"prop-nl:jaar")
 					if type(jaar) is list and jaar:
@@ -146,14 +153,15 @@ def checkWhichOS(concept):
 					r.append([item, int(jaar)])
 				if(word == 'vorige'):
 					desc = True
-
+				#sort them on year
 				r = sorted(r, key=getKeyOS,  reverse=desc)
 				v.printDebug("found os: "+str(r[0][0]))
 				return r[0][0]
-
+			#else if only one, or not next / previous return the result
 			elif result:
 				v.printDebug("found os: "+str(result[0]))
 				return result[0]
+	#we failed, return false
 	return False
 
 #gives the URI of a given concept
@@ -179,13 +187,17 @@ def getDomainURI(concept):
 				URI = line[1] #store URI
 	return URI
 
+# look in sentence if we should use checkWhichOS, but more robuust, used when we don't find a concept
 def specificOS(sentence):
+	#check if there is $1 Olympic $2spelen
 	s = re.search("\w+ Olympische \w*spelen", sentence, re.IGNORECASE)
 	if s is not None:
+		#check if $1 is a volgend/vorige/eerste etc word
 		w = v.SPECIFIC_OS_CHECK
 		words = s.group().lower().split(' ')
 		for word in w:
 			if word in words:
+				#we need a specific OS so return checkWhichOS, with the part what now is the concept
 				return checkWhichOS(s.group())
 	return False
 
@@ -483,32 +495,40 @@ def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', 
 	#only now works for years
 	#other stuff can be added if one feels the need to do so
 	v.printDebug("use parseTimeDifference")
+	#get the begindate of the concept
 	answers,titles = queryXofY(beginDate, URI, False, prefix=beginPrefix)
 	if not answers:
 		answers = titles
 	if answers:
+		#convert the string to a date
 		d = answers[0].split('-')
 		print(date)
 		begin = date(int(d[0]), int(d[1]), int(d[2]))
 	else:
 		return None
 
+	#default, compare begin date with today
 	if(endDate == "now"):
 		end = date.today()
 		v.printDebug("got enddate as today")
+	#get the given enddate
 	else:
 		answers,titles = queryXofY(endDate, URI, False, prefix=endPrefix)
 		if not answers:
 			answers = titles
 		if answers:
+			#convert endate to a date
 			d = answers[0].split('-')
 			end = date(int(d[0]), int(d[1]), int(d[2]))
 		else:
 			return None
+	#default, show result in years
 	if(showIn=="years"):
 		years =  end.year - begin.year
+		#if we are not yet at the begin month subtract a year
 		if(end.month < begin.month):
 			years -= 1
+		#if we are in begin month, but not yet the day then subtract a year
 		elif(end.month == begin.month and end.day < begin.day):
 			years -= 1
 	return [(str(years)+ " jaar")]
@@ -540,6 +560,7 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 	if type(concept) is not list:
 		concept = [concept]
 
+	#loop through given possible concepts till we find a URI
 	for c in concept:
 		if "nl.dbpedia" not in c:
 			URI = getResource(c)
