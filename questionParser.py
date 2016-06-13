@@ -506,6 +506,13 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 	dataTypes = None
 	URI = None
 	v.printDebug("found concept: "+str(concept)+" property: "+str(property))
+	v.printDebug("expected answer: "+ str(expectedAnswer))
+
+	#if property is Olympische spelen and expected answer is location, then we know we need the location of the Olympic games then
+	if(expectedAnswer== v.ANSWER_LOCATION and (property.strip().lower() == 'olympische zomerspelen' or property.strip().lower() == 'olympische winterspelen' or property.strip().lower() == 'olympische spelen')):
+		property = "locatie"
+
+
 	#find URI of concept
 	if type(concept) is not list:
 		concept = [concept]
