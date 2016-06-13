@@ -26,7 +26,7 @@ def findProperties(URI, both=True):
 			answer = result[arg]["value"]
 			raw_properties.append(answer)
 
-	#below is also the "andersom" properties
+	#below is also the "andersom" properties (that means "is PROPERTY of" property)
 	if both:
 		query = """
 		SELECT DISTINCT ?prop   WHERE{
@@ -661,6 +661,7 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 	property = None
 	concepts =[]
 
+	#some options to get concept and property
 	t = xml.xpath('//node[@rel="whd" and (@frame="er_wh_loc_adverb" or @frame="wh_tmp_adverb")]')
 	t=t[0]
 	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
@@ -683,6 +684,7 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 
 	for name in concepts:
 		concept.append(getTreeWordList(name,v.TYPE_WORD))
+	#backup method to find concept
 	if concept==None or concept=="":
 		concept = patheticConceptFinder(sentence)
 	if concept==None or concept=="":
@@ -705,6 +707,7 @@ def parseHow(xml, expectedAnswer, sentence):
 	dataTypes = None
 	concept = None
 
+	#get property and concept
 	t = xml.xpath('//node[@rel="whd" and @cat="ap"]')[0]
 	prop =  t.xpath('//node[@rel="hd"]', smart_strings=False)
 	concepts =  t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False)
@@ -783,11 +786,14 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 
 	concepts = xml.xpath('//node[@rel="body" and ../@cat="whq"]')
 
+	#extra option to get more specific concept
 	for name in concepts:
 		c =getTreeWordList(name,v.TYPE_WORD, exclude = [['pos','verb']])
 
+	#if first try failed, use second option
 	if concept==None or concept=="" or concept == " ":
 		concept = c
+	#if both tries worked, add second first, because it is more specific
 	elif c and not c=="":
 		concept = [c, concept]
 

@@ -53,16 +53,19 @@ def queryXofY(property, URI, getDataType, prefix='prop-nl:'):
 	""" % (prefix, property,URI)
 	v.printDebug(query)
 
+    #try normal way, if works, preceed otherwise, try the "is PROPERTY of" query
 	if getDataType:
 		answers, dataTypes = sendQuery(query, getDataType)
 		if not answers:
 			v.printDebug("andersom question")
 			answers,dataTypes = sendQuery(q2, getDataType)
+    #both failed, try without datatype
 	else:
 		answers = sendQuery(query, False)
 		if not answers:
 			v.printDebug("andersom question")
 			answers = sendQuery(q2, False)
+    #format the answers
 	for answer in answers:
 		if "nl.dbpedia" in answer:
 			title = URITitle(answer)
