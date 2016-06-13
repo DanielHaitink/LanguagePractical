@@ -136,7 +136,11 @@ def preParseSentence(sentence):
 			v.printDebug(concept)
 			v.printDebug(property)
 			if bestMatch != None:
-				return queryXofY(bestMatch, concept, False)
+				answers = queryXofY(bestMatch, concept, False)
+				if len(answers)>1:
+					return answers[1]
+				else:
+					return None
 			else:
 				return None
 
