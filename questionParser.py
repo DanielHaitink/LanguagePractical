@@ -189,7 +189,7 @@ def checkWhichOS(concept):
 				v.printDebug("found os: "+str(result[0]))	
 				return result[0]
 	return False
-			
+
 
 
 
@@ -245,6 +245,7 @@ def patheticConceptFinder(sentence):
 				if similarity > similarityMax:
 					similarityMax = similarity
 					URI = line[1]
+	v.printDebug("Found concept:" + URI)
 	return URI
 
 #Removes everything from string except numbers and letters
@@ -610,6 +611,7 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		else:
 			break
 	# Return the first answer found, At least it gives an answer
+	v.printDebug(titles)
 	if answers == None:
 		return titles
 	return titles
