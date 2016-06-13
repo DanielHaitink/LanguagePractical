@@ -252,20 +252,6 @@ def getSimilarWords(string):
 		returnList.append(string)
 	return returnList
 
-#Unknown how this worked
-#Not used, can be deleted????
-def findPropertySimilarWords(sentence):
-	bestProp = None
-	for verb in verbs:
-		for preprosition in prepositions:
-			if verb in sentence and preprosition in sentence:
-				currentProp = str(find_between(sentence.lower(), verb+" ", " "+preprosition))
-				if currentProp is not None and currentProp != "" and currentProp != " "   and ( bestProp is None or len(bestProp) < len(currentProp)):
-					bestProp = currentProp
-	if bestProp is None:
-		return None
-	return getSimilarWords(removeArticles(bestProp))
-
 # Get redirected URI if it redirects
 def getRedirectedURI(URI):
 	redirectURIList = getRedirectPage(URI)
