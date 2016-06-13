@@ -41,7 +41,6 @@ def findProperties(URI, both=True):
 			for arg in result :
 				answer = result[arg]["value"]
 				raw_properties.append(answer)
-
 		#end of andersom properties
 
 	properties = []
@@ -50,43 +49,8 @@ def findProperties(URI, both=True):
 			element = element.split("/")
 			properties.append(element[-1])
 
-
-
-
 	return list(set(properties))
 
-
-# Find all properties that the given URI has, but not properties that have a URI as answer
-def findProperties2(URI):
-	query = """
-	SELECT ?property, ?value
-
-	WHERE {<%s> ?property ?value
-	FILTER (!regex(?value, "nl.dbpedia"))
-	}
-	""" % (URI)
-
-	sparql = SPARQLWrapper("http://nl.dbpedia.org/sparql")
-	sparql.setQuery(query)
-	sparql.setReturnFormat(JSON)
-	results = sparql.query().convert()
-
-	raw_properties = []
-
-	for result in results["results"]["bindings"]:
-		for arg in result :
-			answer = result[arg]["value"]
-			raw_properties.append(answer)
-	properties = []
-	for element in raw_properties:
-		if "nl.dbpedia.org/property" in element:
-			element = element.split("/")
-			properties.append(element[-1])
-
-
-
-
-	return list(set(properties))
 
 #give alpino node and wordtype you want to extract see variables
 #exclude most contain a list of arrays, where an array is [attrib, value], there words will be filtered out of the result
@@ -137,7 +101,7 @@ def checkWhichOS(concept):
 	v.printDebug("checking which os we need")
 	result =[]
 	r = []
-	w = v.SPECIFIC_OS_CHECK 
+	w = v.SPECIFIC_OS_CHECK
 	words = concept.lower().split(' ')
 	for word in w:
 
@@ -155,7 +119,7 @@ def checkWhichOS(concept):
 			if reg is None:
 				return False
 
-			#ugly but database lacks consistency so a bit nore of hardcoding 
+			#ugly but database lacks consistency so a bit nore of hardcoding
 			if (prop == "prop-nl:eerste"):
 				if(reg.group().lower == "olympische zomerspelen"):
 					return("http://nl.dbpedia.org/resource/Olympische_Zomerspelen_1896")
@@ -186,14 +150,11 @@ def checkWhichOS(concept):
 				return r[0][0]
 
 			elif result:
-				v.printDebug("found os: "+str(result[0]))	
+				v.printDebug("found os: "+str(result[0]))
 				return result[0]
 	return False
 
-
-
-
-#gives the URI of a given domain
+#gives the URI of a given concept
 def getDomainURI(concept):
 	max = 0
 	URI = None
@@ -219,7 +180,7 @@ def getDomainURI(concept):
 def specificOS(sentence):
 	s = re.search("\w+ Olympische \w*spelen", sentence, re.IGNORECASE)
 	if s is not None:
-		w = v.SPECIFIC_OS_CHECK 
+		w = v.SPECIFIC_OS_CHECK
 		words = s.group().lower().split(' ')
 		for word in w:
 			if word in words:
@@ -227,10 +188,9 @@ def specificOS(sentence):
 	return False
 
 
-
-
+#alternative way of finding concept by comparing entire sentence to entries in pairCounts
 def patheticConceptFinder(sentence):
-	t =specificOS(sentence) 
+	t =specificOS(sentence)
 	if t:
 		return t
 	v.printDebug("No concept found, desperately trying to find one using difflib")
@@ -293,6 +253,7 @@ def getSimilarWords(string):
 	return returnList
 
 #Unknown how this worked
+#Not used, can be deleted????
 def findPropertySimilarWords(sentence):
 	bestProp = None
 	for verb in verbs:
@@ -319,7 +280,7 @@ def inNamesCorpus(string):
 			return True
 	return False
 
-# DOES NOT WORK CORRECTLY
+#Match a list of synonyms and a list of properties from a URI to find the best match
 def matchSynonymProperty(synonyms, properties, threshold = v.SIMILARITY_THRESHOLD):
 	#return sorted list of most likely properties
 	bestMatches = []
@@ -370,6 +331,7 @@ def getExpectedAnswerURI(answer):
 		URI  = getDomainURI(answer)
 	return URI
 
+#check if the answer is a person
 def isExpectedAnswerPerson(answer,dataType):
 	if dataType is not None and (isInDataType(dataType, v.DATATYPE_DATE) or isInDataType(dataType, v.DATATYPE_INTEGER)):
 		return False
@@ -402,7 +364,7 @@ def isExpectedAnswerPerson(answer,dataType):
 			return True
 	return False
 
-#TODO probably not 100% correct
+#check if the answer is a location
 def isExpectedAnswerLocation(answer,dataType):
 	if dataType is not None and (isInDataType(dataType, v.DATATYPE_DATE) or isInDataType(dataType, v.DATATYPE_INTEGER)):
 		return False
@@ -429,6 +391,7 @@ def isExpectedAnswerLocation(answer,dataType):
 			return True;
 	return False
 
+#check if the answer is a date
 def isExpectedAnswerDate(answer,dataType):
 	# check xsd:date
 	#can't be date if it is a uri
@@ -438,6 +401,7 @@ def isExpectedAnswerDate(answer,dataType):
 		return True
 	return False
 
+#check if the answer is a number
 def isExpectedAnswerNumber(answer,dataType):
 	# check xsd:integer
 	v.printDebug(dataType)
@@ -453,6 +417,7 @@ def isExpectedAnswerNumber(answer,dataType):
 			return True
 	return False
 
+#check if the answer is an object
 def isExpectedAnswerObject(answer, dataType):
 	# Unsure how to check this
 	return True
@@ -491,10 +456,7 @@ def isExpectedAnswer(answer,dataTypes, expectedAnswer):
 	# Change to True if all have to be correct
 	return False
 
-
-#TODO: -for each type of question, add function to parse it
-#- send parsed information to correct SPARQL query template
-
+#get a URI from a concept
 def getResource(concept):
 	URI = None
 	URI = getDomainURI(concept)
@@ -507,9 +469,9 @@ def getResource(concept):
 			v.printDebug("NO URI FOUND IN XofY")
 			v.printDebug(concept)
 			return None
-
 	return URI
 
+#check if a person is dead, to find correct age
 def isDead(URI):
 	deathDate = basicQuery(URI, "dbpedia-owl:deathDate")
 	if deathDate != None and deathDate != []:
@@ -550,7 +512,7 @@ def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', 
 			years -= 1
 	return [(str(years)+ " jaar")]
 
-
+#given a concept and a list of possible properties, try to retrieve an answer from dbpedia
 def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold = v.SIMILARITY_THRESHOLD):
 	answers = None
 	firstAnswer = None
@@ -572,7 +534,6 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		else:
 			URI = c
 
-
 	####### used to get all properties out of sample questions, not needed later on..
 	v.prop = property
 	if(v.GETONLYPROPERTIES):
@@ -592,12 +553,8 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 	synonyms = getSimilarWords(property)
 	v.printDebug(synonyms)
 
-	#TODO bestMatches lijkt het niet goed te doen
 	bestMatches = matchSynonymProperty(synonyms, URIprops, threshold)
 
-	#go through properties until expected answer is found
-	#TODO: only terminate if answer matches expected answer!
-	#TODO not only get answers, also get the XML information of the answer so it can classify correctly
 	for property in bestMatches:
 		v.printDebug (property)
 		answers,titles,dataTypes = queryXofY(property, URI, True)
@@ -616,34 +573,6 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		return titles
 	return titles
 
-def findInPage(answers, property, expectedAnswer, sentence):
-	v.printDebug("URI found instead of expected answer, looking for answer in the URI")
-	returnList = []
-	for URI in answers:
-		if "nl.dbpedia" in URI:
-			URIprops = findProperties2(URI)
-			synonyms = getSimilarWords(property)
-			bestMatches = matchSynonymProperty(synonyms, URIprops, 0.4)
-			for property in bestMatches:
-				v.printDebug (property)
-				answers,titles,dataTypes = queryXofY(property, URI, True)
-				if answers == None or answers == []:
-					continue
-				v.printDebug(answers)
-				v.printDebug(expectedAnswer)
-				if not isExpectedAnswer(answers,dataTypes, expectedAnswer):
-					answers = None
-					continue
-				else:
-					break
-			# Return the first answer found, At least it gives an answer
-			returnList.append(answers)
-		else:
-			 returnList.append(None)
-	return returnList
-
-
-
 # Parse question of type "Wie/wat is X van Y"
 def parseXofY(xml, expectedAnswer, sentence):
 	answers = None
@@ -655,10 +584,6 @@ def parseXofY(xml, expectedAnswer, sentence):
 
     #find concept
 	concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod" and (../../@rel="su" or ../../@rel="predc" )]', smart_strings=False)
-	#if not concept:
-	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="mod"]')
-    #find property
-	#properties = xml.xpath('//node[@rel="hd" and ../@rel="su"]')
 	properties = xml.xpath('//node[@rel="hd" and ../@rel="whd" and not(@word="Aan")]')
 
 	for name in concepts:
@@ -691,8 +616,6 @@ def parseXofY(xml, expectedAnswer, sentence):
 
 
 def parseWhereWhen(xml, expectedAnswer, sentence):
-	#maybe idea to split the parse into more functions, lot of duplicate code this way.
-	#Waar is Sven Kramer geboren werkt /wanneer geboren niet. Pakt nog steeds geboorteplaats als property
 	answers = None
 	firstAnswer = None
 	titles = None
@@ -705,9 +628,6 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 	t=t[0]
 	if t.xpath('//node[@rel="hd" and ../@cat="ppart" ]', smart_strings=False):
 		prop =  t.xpath('//node[@rel="hd" and ../@cat="ppart" and not(@lemma="zijn")]', smart_strings=False);
-	#elif xml.xpath('//node[@cat="mwu"]'):
-	#	prop = t.xpath('//node[@rel="hd" and ../@rel="su"]')
-	#	concepts.append(t.xpath('//node[@cat="mwu"]')[0])
 	else:
 		prop =  t.xpath('//node[@rel="hd" and ../@rel="body" and not(@lemma="zijn")]', smart_strings=False);
 	if t.xpath('//node[@rel="su" and ../@rel="body"]', smart_strings=False):
@@ -723,7 +643,6 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 		if t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False):
 			concepts = []
 			concepts.append(t.xpath('//node[@rel="predc" and ../@rel="body"]', smart_strings=False)[0]);
-
 
 	for name in concepts:
 		concept.append(getTreeWordList(name,v.TYPE_WORD))
@@ -773,16 +692,6 @@ def parseVerbs(xml, expectedAnswer, sentence):
 	dataTypes = None
 	property = None
 	concept = None
-	#//node[@rel="hd" and @pt="ww"]
-	#t = xml.xpath('//node[@rel="su" and ../@rel="body" and @index and not(@cat)]')[0]
-	#t=t[0]
-	#	index = t.get("index");
-	#	query = '//node[@index ="'+index+'"]'
-	#	part_prop = xml.xpath(query)[0].get("root")
-
-	#print_tree( xml.xpath('//node[@rel="hd" and @stype="whquestion" and ../@rel="body"]', smart_strings=False)[0])
-
-
 
 	prop = xml.xpath('//node[@rel="hd" and @pt="ww" and not (@lemma="hebben" or @lemma="worden" or @lemma="zijn")]', smart_strings=False)#stype="whquestion"
 	concepts =  xml.xpath('//node[@cat="np" and (../@rel="body" or ../../@rel="body")]', smart_strings=False);
@@ -816,22 +725,7 @@ def parseNumberOf(xml, expectedAnswer, sentence):
 	# First check URI for number solutions
 	# Else create a listing query which somehow answers question
 	properties = xml.xpath('//node[(@rel="mod" and ../@rel="whd") or (@rel="hd" and ../@rel="whd")]')
-
-	'''
-	#concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body") or @rel="su"]')
-	concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body")]')
-	if not concepts:
-		concepts = xml.xpath('//node[@rel="obj1" and (../@rel="body" or ../../@rel="body")]')
-	for name in concepts:
-		concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
-	if concept==None or concept=="" or concept == " ":
-		concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
-		for name in concepts:
-			concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
-	'''
-
 	concepts = xml.xpath('//node[(@rel="mod" and ../@rel="body") or @rel="su"]')
-	#concepts = xml.xpath('//node[@rel="obj1" and ../@rel="body"]')
 	for name in concepts:
 		concept = concept + getTreeWordList(name,v.TYPE_WORD) + " "
 		concept = concept.strip()
