@@ -96,16 +96,18 @@ def search(query, file):
 def getKeyOS(item):
     return item[1]
 
-# Check for unspecific Olympic Games URI's
+# Check for unspecific Olympic Games URI's if concept is vorige/volgende OS then get uri of that OS
 def checkWhichOS(concept):
 	v.printDebug("checking which os we need")
 	result =[]
 	r = []
 	w = v.SPECIFIC_OS_CHECK
 	words = concept.lower().split(' ')
+	#check if in concept is vorige/volgende etc.
 	for word in w:
 
 		if word in words:
+			#get right property for "each" possible word, hardcoded 
 			if word in ['laatste','vorige']:
 				prop =  "dbpedia-owl:previousEvent"
 			elif word in ['volgende', 'aankomende', 'eerstvolgende']:
