@@ -1,6 +1,6 @@
 #LanguagePractical
 
-A Dutch question parser, which can answer your Dutch questions using dbPedia and local resources. 
+A Dutch question parser, which can answer your Dutch questions using dbPedia and local resources.
 Mainly focussed on questions about the Olympics.
 
 ##Prerequisites
@@ -17,11 +17,15 @@ Also make sure you download the file called `pairCounts` over [here](http://spot
 ##Usage
 
 Use the program by opening a terminal window. Go to the map the python files are in and there do the following:
+
 `python3 main.py`
 
-The program will now accept Dutch questions, like the following input:
+To feed it a file with questions formatted like the questions below you can do the following:
+
+`python3 main.py < ./QuestionsFile.txt > ./OutputFile.txt`
+
+The program accepts Dutch questions, formatted like the following input:
 - `Hoe lang is Usain Bolt?`
-- `1  Hoe lang is Usain Bolt?` (Note that it is a tab inbetween the number and sentence)
+- `1  Hoe lang is Usain Bolt?` (Note that it is a tab in between the number and sentence)
 
 To exit the program type `exit` or use the key-combination `ctrl+D`
-

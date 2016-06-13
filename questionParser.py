@@ -476,6 +476,7 @@ def isDead(URI):
 		 return True
 	return False
 
+# Calculates age of person
 def parseTimeDifference(URI, beginDate,beginPrefix="prop-nl:", endDate = 'now', endPrefix="prop-nl:", showIn='years'):
 	#only now works for years
 	#other stuff can be added if one feels the need to do so
@@ -613,7 +614,7 @@ def parseXofY(xml, expectedAnswer, sentence):
 		return None
 	return parseConceptProperty(concept, property, expectedAnswer, sentence)
 
-
+# Parse questions of location and person
 def parseWhereWhen(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
@@ -659,6 +660,7 @@ def parseWhereWhen(xml, expectedAnswer, sentence):
 
 	return parseConceptProperty(concept,property, expectedAnswer, sentence)
 
+# Parse Questions with "Hoe" as first word
 def parseHow(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
@@ -684,6 +686,7 @@ def parseHow(xml, expectedAnswer, sentence):
 		return None
 	return parseConceptProperty(concept,property, expectedAnswer, sentence)
 
+# Parse questions with verbs as property
 def parseVerbs(xml, expectedAnswer, sentence):
 	answers = None
 	firstAnswer = None
