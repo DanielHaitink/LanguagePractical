@@ -24,9 +24,11 @@ def formatAnswer(solutionID, solutionList):
 		solutionString += str(item) + "\t"
 	return solutionString
 
+# Stop the program and show an error of the missing file
 def errorFileNotFound(fileName):
 	sys.exit("FATAL ERROR: MISSING %s FILE, PLEASE MAKE SURE YOU HAVE THAT FILE IN THE RESOURCE FOLDER" %(fileName))
 
+# Check if all needed files are located in the expected locations, if not exit program with an errorFileNotFound
 def checkFilesExist():
 	if not os.path.isfile("./" + v.FILE_NAMES):
 		errorFileNotFound(v.FILE_NAMES)
@@ -34,8 +36,6 @@ def checkFilesExist():
 		errorFileNotFound(v.FILE_SYNONYMS)
 	if not os.path.isfile("./" + v.FILE_PAIRCOUNT):
 		errorFileNotFound(v.FILE_PAIRCOUNT)
-	if not os.path.isfile("./" + v.FILE_OSSPORTS):
-		errorFileNotFound(v.FILE_OSSPORTS)
 	return
 
 #Shows help
@@ -44,6 +44,7 @@ def showHelp():
 	print("To exit the program type exit or use CTRL+D")
 	input("PRESS THE ENTER KEY TO CONTINUE...")
 
+# Print the example questions if in __DEBUG__ to stderror
 def printExampleQuestions():
 	n=1
 	v.printDebug("Example questions: type a number to query this question")
@@ -51,6 +52,7 @@ def printExampleQuestions():
 		v.printDebug(str(n) + ". " + q)
 		n+=1
 
+# First check for all needed files
 checkFilesExist()
 
 # set counter for solutionID
@@ -70,7 +72,7 @@ for line in sys.stdin:
 	if line == "help\n":
 		showHelp()
 		continue
-
+	# If number is given without sentence, loof in the exampleQuestions
 	if line.rstrip().isdigit():
 		if int(line.rstrip()) > len(v.QUESTIONS):
 			v.printDebug("Number too big!")
@@ -85,6 +87,7 @@ for line in sys.stdin:
 			sentence = lineList[1].rstrip()
 		else:
 			v.printDebug("More than 2 tabs in sentence!")
+			continue
 	else:
 		sentence = line.rstrip()
 
@@ -99,11 +102,10 @@ for line in sys.stdin:
 
 		# Print the answer
 		print(formatAnswer(solutionID, solutionList))
+
 	except Exception as e:
 		print(solutionID)
 		exc_type, exc_value, exc_tb = sys.exc_info()
 		traceback.print_exception(exc_type, exc_value, exc_tb)
 
-	#except:
-	#	print("Unexpected error:", sys.exc_info())
 v.printDebug("Terminating Program!")
