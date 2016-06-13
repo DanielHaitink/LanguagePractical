@@ -1,7 +1,7 @@
 import sys
 
 # Show debug messages
-__DEBUG__ = False
+__DEBUG__ = True
 
 # threshold for the matchSynonymProperty function
 SIMILARITY_THRESHOLD = 0.4
