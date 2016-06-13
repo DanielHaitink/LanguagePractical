@@ -8,9 +8,11 @@ from SPARQLQuery import queryXofY, queryGetTypes, URITitle, getRedirectPage, bas
 # Find all properties that the given URI has
 def findProperties(URI, both=True):
 	query = """
-	SELECT ?property
-	WHERE {<%s> ?property ?value  }
-	""" % (URI)
+	SELECT ?property, ?value
+	WHERE {<%s> ?property ?value
+	FILTER not exists {<%s> prop-nl:wikiPageUsesTemplate ?value}
+	}
+	""" % (URI, URI)
 
 	sparql = SPARQLWrapper("http://nl.dbpedia.org/sparql")
 	sparql.setQuery(query)

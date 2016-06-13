@@ -1,4 +1,18 @@
 Name Corpus
-
 https://www.meertens.knaw.nl/nvb/
 https://www.cs.cmu.edu/Groups/AI/areas/nlp/corpora/names/0.html
+
+Open Dutch Wordnet for synonyms
+https://github.com/MartenPostma/OpenDutchWordnet
+
+thesaurus opentaalbank for synonyms
+http://data.opentaal.org/opentaalbank/thesaurus/index.php
+
+Properties
+http://nl.dbpedia.com/
+
+For some help and functions
+http://www.stackoverflow.com/
+
+pairCounts
+http://spotlight.sztaki.hu/downloads/latest_data/nl.tar.gz
