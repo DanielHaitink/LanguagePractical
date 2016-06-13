@@ -134,21 +134,39 @@ def getKeyOS(item):
     return item[1]
 
 def checkWhichOS(concept):
+	v.printDebug("checking which os we need")
 	result =[]
 	r = []
-	w = ['eerste','vorige','laatste','volgende','aankomende']
+	w = v.SPECIFIC_OS_CHECK 
 	words = concept.lower().split(' ')
 	for word in w:
 
 		if word in words:
 			if word in ['laatste','vorige']:
-				word = 'vorige'
-			if word in ['volgende', 'aankomende']:
-				word = 'volgende'
+				prop =  "dbpedia-owl:previousEvent"
+			elif word in ['volgende', 'aankomende', 'eerstvolgende']:
+				prop = "dbpedia-owl:nextEvent"
+			elif word in ['eerste']:
+				prop = "prop-nl:eerste"
 			reg = re.search("Olympische (.)*spelen", concept, re.IGNORECASE)
-			URI = getDomainURI(reg.group())
 
-			URI =basicQuery(URI,"prop-nl:"+word)
+
+			#safety check
+			if reg is None:
+				return False
+
+			#ugly but database lacks consistency so a bit nore of hardcoding 
+			if (prop == "prop-nl:eerste"):
+				if(reg.group().lower == "olympische zomerspelen"):
+					return("http://nl.dbpedia.org/resource/Olympische_Zomerspelen_1896")
+				elif(reg.group().lower == "olympische winterspelen"):
+					return('http://nl.dbpedia.org/resource/Olympische_Winterspelen_1924')
+			v.printDebug("found pattern"+str(reg.group()))
+			#ugly fix with tab, to prevent Zomerspelen 2012 to be selected...
+			URI = getDomainURI(reg.group()+"\t")
+			v.printDebug("uri found: "+str(URI))
+			URI =basicQuery(URI, prop)
+			v.printDebug("osanswer: "+str(URI))
 			for u in URI:
 				if isURI(u):
 					result.append(u)
@@ -164,11 +182,12 @@ def checkWhichOS(concept):
 					desc = True
 
 				r = sorted(r, key=getKeyOS,  reverse=desc)
+				v.printDebug("found os: "+str(r[0][0]))
 				return r[0][0]
 
 			elif result:
+				v.printDebug("found os: "+str(result[0]))	
 				return result[0]
-			
 	return False
 			
 
@@ -197,8 +216,23 @@ def getDomainURI(concept):
 				URI = line[1] #store URI
 	return URI
 
+def specificOS(sentence):
+	s = re.search("\w+ Olympische \w*spelen", sentence, re.IGNORECASE)
+	if s is not None:
+		w = v.SPECIFIC_OS_CHECK 
+		words = s.group().lower().split(' ')
+		for word in w:
+			if word in words:
+				return checkWhichOS(s.group())
+	return False
+
+
+
 
 def patheticConceptFinder(sentence):
+	t =specificOS(sentence) 
+	if t:
+		return t
 	v.printDebug("No concept found, desperately trying to find one using difflib")
 	URI = None
 	similarityMax = 0

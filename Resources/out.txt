@@ -1,0 +1,25 @@
+1	Vladimir Poetin	
+2	Adolf Hitler	
+3	
+4	President Bill Clinton	
+5	Elizabeth II van het Verenigd Koninkrijk	
+6	
+7	4	
+8	11028	
+9	1986-04-23	
+10	Oudeschoot	
+11	Lord of the Rings	
+12	204	
+13	1924-01-25	
+14	2014-02-07	
+15	Rio de Janeiro, Brazilië	
+16	
+17	
+18	
+19	Olympische Winterspelen 2018	Olympische Zomerspelen 2016	
+20	
+21	
+22	100	
+23	302	
+24	31	
+25	2016-08-05	

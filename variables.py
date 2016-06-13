@@ -33,6 +33,9 @@ WHD_OBJECT = ["welke"]
 
 PASS_PERSON = ["sir", "madam", "Dame", "lord", "Lady", "Queen"]
 
+SPECIFIC_OS_CHECK = ['eerste','vorige','laatste','volgende','aankomende', 'eerstvolgende']
+
+
 #dataTypes
 DATATYPE_INTEGER = ["http://www.w3.org/2001/XMLSchema#integer",
 "http://www.w3.org/2001/XMLSchema#double",
