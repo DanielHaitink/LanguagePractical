@@ -59,9 +59,9 @@ def preParseSentence(sentence):
 			expectedAnswer = v.ANSWER_OBJECT
 		elif containsFromList(whd, v.WHD_DATE):
 			expectedAnswer = v.ANSWER_DATE
-		#added debug statement, to see if we expect the right thing /anco
 		v.printDebug("Expected type: " + str(expectedAnswer));
 
+# Look for the correct function to parse the sentence
 	# Check if question has expected answer number
 	if expectedAnswer == v.ANSWER_NUMBER:
 		v.printDebug("Parsing as a number of question")
@@ -112,8 +112,9 @@ def preParseSentence(sentence):
 			if not solution is None:
 				return solution
 
-		v.printDebug("Question does not match any pattern")
+		v.printDebug("Final Try in parseXofY")
 
+		# Final try to at least find something
 		return(parseXofY(alpinoXML, expectedAnswer, sentence))
 
 	return None
