@@ -527,12 +527,6 @@ def parseConceptProperty(concept,property, expectedAnswer, sentence, threshold =
 		else:
 			URI = c
 
-	####### used to get all properties out of sample questions, not needed later on..
-	v.prop = property
-	if(v.GETONLYPROPERTIES):
-		#print("returning now")
-		return None
-
 	if(property == "oud" or property == "leeftijd"):
 		if isDead(URI):
 			return ["Overleden"]

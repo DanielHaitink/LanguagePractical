@@ -68,12 +68,8 @@ def printError(debug, exception):
 	if __DEBUG__:
 		print(debug+ " " + exception, file=sys.stderr)
 
-<<<<<<< HEAD
-=======
-# Variable to obtain only properties
-GETONLYPROPERTIES = False
 
->>>>>>> 7daef6e85ab9384381d616a31fa5ee27bf5cb90f
+
 #Example questions for easy testing
 QUESTIONS = [
     "Hoe lang is Usain Bolt?",
