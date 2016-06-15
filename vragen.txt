@@ -1,0 +1,51 @@
+1	Wat is de geboorteplaats van Inge de Bruijn?
+2	Wat is de geboortedatum van Leontien van Moorsel?
+3	Wat is de bijnaam van Leontien van Moorsel?
+4	Wie droegen de vlag op de Olympische Zomerspelen van 2004?
+5	Welke rang in het medailleklassement had Nederland op de Olympische Zomerspelen van 2000?
+6	Op welke olympische spelen was Anky van Grunsven vlaggendrager?
+7	Wat is de volledige naam van Mark Tuitert?
+8	Wat is de specialisatie van Gerard van Velde?
+9	Op welke onderdelen kwam Nicolien Sauerbreij uit op de Olympische Spelen?
+10	Hoeveel Nederlandse sporters deden mee aan de Olympische Winterspelen van 2002?
+11	Hoeveel gouden medailles behaalde Nederland op de Olympische Winterspelen van Sotsi?
+12	Hoeveel sporters uit Chili namen deel aan de Olympische Winterspelen van 2006?
+13	Door wie werden de Olympische Winterspelen 2014 geopend?
+14	Bij welke Olympische spelen droeg Muhammad Ali de vlam?
+15	Aan welke Paralympische Spelen deed Kim van Dijk mee?
+16	Wie opende de Paralympische Spelen 2012?
+17	Aan hoeveel paralympische spelen deed Esther Vergeer mee?
+18	Hoeveel Nederlandse paralympische kampioenen zijn er in totaal?
+19	Wie heeft als bijnaam 'The Blade Babe'?
+20	Wie legde de eed af tijdens de Olympische Spelen in 2012?
+21	Wie is de voorzitter van het NOC*NSF?
+22	Wat is de website van het NOC*NSF?
+23	Welke schaatser werd op 16 september 1944 geboren?
+24 	In welke stadions werd het voetbal op de Olympische Spelen van 2008 gehouden?
+25 	Wanneer beginnen de Olympische Zomerspelen van 2016?
+26	In welke stad zullen de Olympische Winterspelen van 2022 worden gehouden?
+27	Welke talen spreekt Kaj Verbij?
+28	Wanneer werd Epke Zonderland Olympisch kampioen?
+29	Hoeveel landen deden mee aan de zomerspelen van 2000?
+30	Aan welke Olympische spelen heeft Epke Zonderland meegedaan?
+31	Aan welke sport doet Maarten Kloosterman?
+32	Welke medaille won Ria Stalman op de Olympische Spelen?
+33	Wanneer werden de Olympische Zomerspelen in de Verenigde Staten gehouden?
+34	Wiens bijnaam is Lightning Bolt?
+35	Wanneer werd Churandy Martina geboren?
+36	In welke sporten won Nederland goud in 2012?
+37	Wat is de discipline van enjamin Raich?
+38	Van wie is Patrick Pearson de coach?
+39	Uit welke stad komt Dafne Schippers?
+40	Welke afstanden loopt Dafne Schippers?
+41	Wie is de coach van Dafne Schippers?
+42	Wat is de beste tijd van Dafne Schippers op de 200m?
+43	Hoeveel landen doen mee aan boogschieten op de Olympische Spelen 2012?
+44	Hoeveel Nederlandse sporters deden er mee aan de Olympische Spelen 2012?
+45	Wat is het motto van de winterspelen in Sotsji?
+46	Hoeveel gouden medailles won Nederland in Londen?
+47	Wie speelden er in het hockeyteam van Nederland op de Olympische Spelen 2012?
+48	Wie is de coach van het Nederlands hockeyteam?
+49	Wanneer won Rafael Nadal een Olympische medaille?
+50	In welk jaar was korfbal een olympische sport?
+
